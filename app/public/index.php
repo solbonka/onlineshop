@@ -1,0 +1,7 @@
+<?php
+$requestUri=$_SERVER['REQUEST_URI'];
+if ($requestUri === '/signup') {
+    require_once "./signup.php";
+    require_once "./forms/signup.phtml";
+}
+?>
