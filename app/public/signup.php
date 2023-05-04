@@ -55,8 +55,9 @@ function validateLastname(array $data): ?string
     $lastname=$data['lastname'] ?? null;
     $err=null;
 
-    if(strlen($lastname)<2 || strlen($lastname)>30)
+    if(strlen($lastname)<2 || strlen($lastname)>30) {
         $err = "Длина имени должна быть от 2 до 30 символов";
+    }
 
     if (!preg_match("/^([A-Z][a-z']{1,29})|([А-ЯЁ][а-яё']{1,29})$/u", $lastname)) {
         $err = "Введите корректную фамилию";
@@ -69,8 +70,9 @@ function validateFirstname(array $data): ?string
     $firstname = $data['firstname'] ?? null;
     $err = null;
 
-    if(strlen($firstname)<2 || strlen($firstname)>30)
+    if(strlen($firstname)<2 || strlen($firstname)>30) {
         $err = "Длина имени должна быть от 2 до 30 символов";
+    }
 
     if (!preg_match("/^([A-Z][a-z']{1,29})|([А-ЯЁ][а-яё']{1,29})$/u", $firstname)) {
         $err = "Введите корректное отчество";
@@ -83,8 +85,9 @@ function validatePatronymic(array $data): ?string
     $patronymic = $data['patronymic'] ?? null;
     $err = null;
 
-    if(strlen($patronymic)<2 || strlen($patronymic)>30)
+    if(strlen($patronymic)<2 || strlen($patronymic)>30) {
         $err = "Длина имени должна быть от 2 до 30 символов";
+    }
 
     if (!preg_match("/^([A-Z][a-z']{1,29})|([А-ЯЁ][а-яё']{1,29})$/u", $patronymic)) {
         $err = "Введите корректное имя";
@@ -126,8 +129,9 @@ function validatePassword(array $data): ?string
 {
     $password = $data['password'] ?? null;
     $err = null;
-    if(strlen($password)<3 || strlen($password)>30)
+    if(strlen($password)<3 || strlen($password)>30) {
         $err = "Длина пароля должна быть от 3 до 30 символов";
+    }
 
     return $err;
 }
