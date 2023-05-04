@@ -1,30 +1,39 @@
 <?php
 session_start();
-if ($_SERVER['REQUEST_METHOD'] === 'POST'){
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $connection = new PDO("pgsql:host=db;dbname=dbname", 'dbuser', 'dbpwd');
-    $stmt = $connection->prepare("SELECT email FROM users WHERE email = ?");
     $errorInputs = [];
-    $errorInputs = validateInputs($_POST, $connection);
-    if (!$errorInputs){
-        header("Location: /main");
+    $errorInputs = validateInputs($_POST);
+    if (!$errorInputs) {
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        $connection = new PDO("pgsql:host=db;dbname=dbname", 'dbuser', 'dbpwd');
+        $stmt = $connection->prepare('SELECT * FROM users WHERE email=?');
+        $stmt->execute([$email]);
+        $user = $stmt->fetch();
+        if ($user && password_verify($password, $user['password'])) {
+            $_SESSION['id'] = $user['id'];
+            header("Location: /main");
+        }
+        else {
+            $errorInputs['email'] = 'Неверный Email или пароль';
+        }
     }
 }
-
-function validateInputs(array $data, PDO $connection):array
+function validateInputs(array $data):array
 {
     $errors = [];
-    $emailError = validateEmail($data, $connection);
+    $emailError = validateEmail($data);
     if($emailError !== null) {
         $errors['email'] = $emailError;
     }
-    $passwordError = validatePassword($data, $connection);
+    $passwordError = validatePassword($data);
     if($passwordError !== null) {
         $errors['password'] = $passwordError;
     }
     return $errors;
 }
-function validateEmail(array $data, PDO $connection): ?string
+function validateEmail(array $data): ?string
 {
     $email = $data['email'] ?? null;
 
@@ -36,20 +45,11 @@ function validateEmail(array $data, PDO $connection): ?string
         return "Введите корректный Email";
     }
 
-    $result = $connection->prepare("SELECT email FROM users WHERE email = :email");
-    $result->execute(['email' => $email]);
-    $exists = $result->fetch();
-
-    if (!$exists) {
-        return "Нет пользователя с таким Email";
-    }
-
     return null;
 }
-function validatePassword(array $data, PDO $connection): ?string
+function validatePassword(array $data): ?string
 {
     $password = $data['password'] ?? null;
-    $email = $data['email'] ?? null;
 
     if(empty($password)){
         return "Введите пароль";
@@ -57,18 +57,6 @@ function validatePassword(array $data, PDO $connection): ?string
 
     if(strlen($password)<3 || strlen($password)>30) {
         return "Длина пароля должна быть от 3 до 30 символов";
-    }
-
-    $result = $connection->prepare("SELECT password FROM users WHERE email = :password");
-    $result->execute(['password' => $email]);
-    $hash = $result->fetch();
-
-    if (!$hash) {
-        return "Неверный пароль";
-    }
-
-    if (!password_verify($password, $hash["password"])) {
-        return "Неверный пароль";
     }
 
     return null;

@@ -355,6 +355,7 @@ p.field span.label-text{
     text-transform: uppercase;
     -webkit-transition: all 0.25s;
     transition: all 0.25s;
+    color: #df405a;
 }
 p.field span.i {
     width: 24px;
@@ -385,10 +386,6 @@ input[type=submit], p.field span.i {
     -o-transition: all 0.3s;
     transition: all 0.3s;
 }
-
-/*--------------------
-Credits
----------------------*/
 
 .icon-credits {
     width: 100%;
