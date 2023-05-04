@@ -2,114 +2,131 @@
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $connection = new PDO("pgsql:host=db;dbname=dbname", 'dbuser', 'dbpwd');
     $errors_inputs = [];
-    $errors_inputs = validate_inputs($lastname, $firstname, $patronymic, $email, $phonenumber, $password);
+    $errors_inputs = validateInputs($_POST, $connection);
     if (!$errors_inputs) {
         $lastname = $_POST['lastname'];
         $firstname = $_POST['firstname'];
         $patronymic = $_POST['patronymic'];
         $email = $_POST['email'];
-        $phonenumber = $_POST['phonenumber'];
+        $phoneNumber = $_POST['phoneNumber'];
         $password = $_POST['password'];
 
         $password = password_hash($password, PASSWORD_DEFAULT);
 
         $sth = $connection->prepare("
-             INSERT INTO users (lastname, firstname, patronymic, email, phonenumber, password)
-             VALUES (:lastname, :firstname, :patronymic, :email, :phonenumber, :password)");
+             INSERT INTO users (lastname, firstname, patronymic, email, phoneNumber, password)
+             VALUES (:lastname, :firstname, :patronymic, :email, :phoneNumber, :password)");
         $sth->execute(['lastname' => $lastname, 'firstname' => $firstname, 'patronymic' => $patronymic,
-            'email' => $email, 'phonenumber' => $phonenumber, 'password' => $password]);
+            'email' => $email, 'phoneNumber' => $phoneNumber, 'password' => $password]);
     }
-
 }
 
-function validate_inputs($data_lastname,$data_firstname,$data_patronymic,$data_email,$data_phonenumber,$data_password):array
+function validateInputs(array $data, PDO $connection):array
 {
     $errors = [];
-    if(validate_lastname($data_lastname) !== null) {
-        $errors['lastname'] = validate_lastname($data_lastname);
+    $lastnameError = validateLastname($data['lastname']);
+    if($lastnameError !== null) {
+        $errors['lastname'] = $lastnameError;
     }
-    if(validate_firstname($data_firstname) !== null) {
-        $errors['firstname'] = validate_firstname($data_firstname);
+    $firstnameError = validateFirstname($data['firstname']);
+    if($firstnameError !== null) {
+        $errors['firstname'] = $firstnameError;
     }
-    if(validate_patronymic($data_patronymic) !== null) {
-        $errors['patronymic'] = validate_patronymic($data_patronymic);
+    $patronymicError = validatePatronymic($data['patronymic']);
+    if($patronymicError !== null) {
+        $errors['patronymic'] = $patronymicError;
     }
-    if(validate_email($data_email) !== null) {
-        $errors['email'] = validate_email($data_email);
+    $emailError = validateEmail($data['email'], $connection);
+    if($emailError !== null) {
+        $errors['email'] = $emailError;
     }
-    if(validate_phonenumber($data_phonenumber) !== null) {
-        $errors['phonenumber'] = validate_phonenumber($data_phonenumber);
+    $phoneNumberError = validatePhoneNumber($data['phoneNumber']);
+    if($phoneNumberError !== null) {
+        $errors['phoneNumber'] = $phoneNumberError;
     }
-    if(validate_password($data_password) !== null) {
-        $errors['password'] = validate_password($data_password);
+    $passwordError = validatePassword($data['password']);
+    if($passwordError !== null) {
+        $errors['password'] = $passwordError;
     }
     return $errors;
 }
-function validate_lastname($data) {
-    $err="";
-    if(strlen($data)<2 || strlen($data)>30)
+function validateLastname($data) {
+    $lastname=$data['lastname'];
+    $err='';
+    if(strlen($lastname)<2 || strlen($lastname)>30)
         $err = "Длина имени должна быть от 2 до 30 символов";
-    if (!preg_match("/^([A-Z][a-z']{1,29})|([А-ЯЁ][а-яё']{1,29})$/u", $data)) {
+    if (!preg_match("/^([A-Z][a-z']{1,29})|([А-ЯЁ][а-яё']{1,29})$/u", $lastname)) {
         $err = "Введите корректную фамилию";
     }
-    if(!empty($err))
-        return($err);
-    else
-        return null;
+    if(!empty($err)) {
+        return ($err);
+    }
+    return null;
 }
-function validate_firstname($data) {
+function validateFirstname($data) {
+    $firstname = $data['firstname'];
     $err="";
-    if(strlen($data)<2 || strlen($data)>30)
+    if(strlen($firstname)<2 || strlen($firstname)>30)
         $err = "Длина имени должна быть от 2 до 30 символов";
-    if (!preg_match("/^([A-Z][a-z']{1,29})|([А-ЯЁ][а-яё']{1,29})$/u", $data)) {
+    if (!preg_match("/^([A-Z][a-z']{1,29})|([А-ЯЁ][а-яё']{1,29})$/u", $firstname)) {
         $err = "Введите корректное отчество";
     }
-    if(!empty($err))
-        return($err);
-    else
-        return null;
+    if(!empty($err)) {
+        return ($err);
+    }
+    return null;
 }
-function validate_patronymic($data) {
+function validatePatronymic($data) {
+    $patronymic = $data['patronymic'];
     $err="";
-    if(strlen($data)<2 || strlen($data)>30)
+    if(strlen($patronymic)<2 || strlen($patronymic)>30)
         $err = "Длина имени должна быть от 2 до 30 символов";
-    if (!preg_match("/^([A-Z][a-z']{1,29})|([А-ЯЁ][а-яё']{1,29})$/u", $data)) {
+    if (!preg_match("/^([A-Z][a-z']{1,29})|([А-ЯЁ][а-яё']{1,29})$/u", $patronymic)) {
         $err = "Введите корректное имя";
     }
-    if(!empty($err))
-        return($err);
-    else
-        return null;
+    if(!empty($err)) {
+        return ($err);
+    }
+    return null;
 }
-function validate_email($data) {
+function validateEmail($data, PDO $connection) {
+    $email = $data['email'];
     $err="";
-    if (!filter_var($data, FILTER_VALIDATE_EMAIL)) {
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $err = "Введите корректный Email";
     }
-    if(!empty($err))
+    $result = $connection->prepare("SELECT email FROM users WHERE email = ?");
+    $result->execute([$err]);
+    $exists = $result->fetch();
+    if ($exists) {
+        return "Этот Email уже используется";
+    }
+    if(!empty($err)) {
         return ($err);
-    else
-        return null;
+    }
+    return null;
 }
-function validate_phonenumber($data) {
+function validatePhoneNumber($data) {
+    $phoneNumber = $data['phoneNumber'];
     $err="";
-    if (!preg_match("/^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$/", $data)) {
+    if (!preg_match("/^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$/", $phoneNumber)) {
         $err = "Введите корректно номер телефона";
     }
-    if(!empty($err))
+    if(!empty($err)) {
         return ($err);
-    else
-        return null;
+    }
+    return null;
 }
-function validate_password($data) {
+function validatePassword($data) {
+    $password = $data['password'];
     $err="";
-    if(strlen($data)<3 || strlen($data)>30)
+    if(strlen($password)<3 || strlen($password)>30)
         $err = "Длина пароля должна быть от 3 до 30 символов";
 
-    if(!empty($err))
-        return($err);
-    else
-        return null;
+    if(!empty($err)) {
+        return ($err);
+    }
+    return null;
 }
 
 ?>
