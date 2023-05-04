@@ -4,12 +4,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $errorInputs = [];
     $errorInputs = validateInputs($_POST, $connection);
     if (!$errorInputs) {
-        $lastname = $_POST['lastname'];
-        $firstname = $_POST['firstname'];
-        $patronymic = $_POST['patronymic'];
-        $email = $_POST['email'];
-        $phoneNumber = $_POST['phoneNumber'];
-        $password = $_POST['password'];
+        $lastname = $_POST['lastname'] ?? null;
+        $firstname = $_POST['firstname'] ?? null;
+        $patronymic = $_POST['patronymic'] ?? null;
+        $email = $_POST['email'] ?? null;
+        $phoneNumber = $_POST['phoneNumber'] ?? null;
+        $password = $_POST['password'] ?? null;
 
         $password = password_hash($password, PASSWORD_DEFAULT);
 
@@ -52,7 +52,7 @@ function validateInputs(array $data, PDO $connection):array
 }
 function validateLastname(array $data): ?string
 {
-    $lastname=$data['lastname'];
+    $lastname=$data['lastname'] ?? null;
     $err=null;
 
     if(strlen($lastname)<2 || strlen($lastname)>30)
@@ -66,7 +66,7 @@ function validateLastname(array $data): ?string
 }
 function validateFirstname(array $data): ?string
 {
-    $firstname = $data['firstname'];
+    $firstname = $data['firstname'] ?? null;
     $err = null;
 
     if(strlen($firstname)<2 || strlen($firstname)>30)
@@ -80,7 +80,7 @@ function validateFirstname(array $data): ?string
 }
 function validatePatronymic(array $data): ?string
 {
-    $patronymic = $data['patronymic'];
+    $patronymic = $data['patronymic'] ?? null;
     $err = null;
 
     if(strlen($patronymic)<2 || strlen($patronymic)>30)
@@ -94,7 +94,7 @@ function validatePatronymic(array $data): ?string
 }
 function validateEmail(array $data, PDO $connection): ?string
 {
-    $email = $data['email'];
+    $email = $data['email'] ?? null;
     $err = null;
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -113,7 +113,7 @@ function validateEmail(array $data, PDO $connection): ?string
 }
 function validatePhoneNumber(array $data): ?string
 {
-    $phoneNumber = $data['phoneNumber'];
+    $phoneNumber = $data['phoneNumber'] ?? null;
     $err=null;
 
     if (!preg_match("/^(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?$/", $phoneNumber)) {
@@ -124,7 +124,7 @@ function validatePhoneNumber(array $data): ?string
 }
 function validatePassword(array $data): ?string
 {
-    $password = $data['password'];
+    $password = $data['password'] ?? null;
     $err = null;
     if(strlen($password)<3 || strlen($password)>30)
         $err = "Длина пароля должна быть от 3 до 30 символов";
