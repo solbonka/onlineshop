@@ -347,7 +347,15 @@ input[type=submit]:hover {
 input[type=submit]:focus {
     outline: none;
 }
-
+p.field span.label-text{
+    display: block;
+    font-size: 0.5em;
+    font-weight: bold;
+    padding-left: 0.5em;
+    text-transform: uppercase;
+    -webkit-transition: all 0.25s;
+    transition: all 0.25s;
+}
 p.field span.i {
     width: 24px;
     height: 24px;

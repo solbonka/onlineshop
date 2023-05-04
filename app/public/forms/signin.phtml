@@ -1,4 +1,3 @@
-<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Аутентификация</title>
@@ -7,7 +6,7 @@
 
     <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.2.3/animate.min.css'>
 
-    <link rel="stylesheet" href=".QWE/forms/css/signinstyle.css">
+    <link rel="stylesheet" href="./forms/css/signinstyle.css">
 
 
 </head>
@@ -24,35 +23,18 @@
                 <button onclick="openLoginInfo();" class='b b-form i i-more' title='Mais Informações'></button>
                 <p class='field'>
                     <label for='user'>Email</label>
-                    <input type='text' id='user' name='email' title='Username' />
-                    <span id='valida' class='i i-warning'></span>
+                    <input type='text' id='user' name='email' title='Username'/>
+                    <span class='label-text'><?php echo $errorInputs['email'] ?? ""; ?></span>
                 </p>
                 <p class='field'>
                     <label for='pass'>Пароль</label>
                     <input type='password' id='pass' name='password' title='Password' />
-                    <span id='valida' class='i i-close'></span>
+                    <span class='label-text'><?php echo $errorInputs['password'] ?? ""; ?></span>
                 </p>
 
                 <input type='submit' id='do_login' value='Войти' title='Get Started' />
             </div>
         </div>
     </div>
-    <div class='box-info'>
-        <p><button onclick="closeLoginInfo();" class='b b-info i i-left' title='Back to Sign In'></button><h3>Need Help?</h3>
-        <div class='line-wh'></div>
-        <button onclick="" class='b-support' title='Forgot Password?'> Forgot Password?</button>
-        <button onclick="" class='b-support' title='Contact Support'> Contact Support</button>
-        <div class='line-wh'></div>
-        <button onclick="" class='b-cta' title='Sign up now!'> CREATE ACCOUNT</button>
-    </div>
 </div>
 </form>
-
-
-<script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-<script src='http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js'></script>
-
-<script src=".QWE/forms/js/signin.js"></script>
-
-</body>
-</html>
