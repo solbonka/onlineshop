@@ -1,14 +1,14 @@
 <?php
 $requestUri=$_SERVER['REQUEST_URI'];
-if ($requestUri === '/signup') {
-    require_once "./signup.php";
-    require_once "./forms/signup.phtml";
-}
-elseif ($requestUri === '/signin')   {
-    require_once "./signin.php";
-    require_once "./forms/signin.phtml";
+
+require_once route($requestUri);
+
+function route($requestUri): string
+{
+    if (preg_match('#/(?<route>[a-z0-9-_]+)#', $requestUri, $params)) {
+        if (file_exists("./{$params['route']}.php")) {
+            return "./{$params['route']}.php";
+        }
     }
-elseif ($requestUri === '/main') {
-    require_once "./forms/main.phtml";
+    return "./forms/notfound.phtml";
 }
-?>

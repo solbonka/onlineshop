@@ -135,5 +135,5 @@ function validatePassword(array $data): ?string
 
     return $err;
 }
-
+require_once "./forms/signup.phtml";
 ?>
