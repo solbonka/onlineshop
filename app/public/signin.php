@@ -1,8 +1,7 @@
 <?php
 session_start();
+$errorInputs = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-    $errorInputs = [];
     $errorInputs = validateInputs($_POST);
     if (!$errorInputs) {
         $email = $_POST['email'];
@@ -62,4 +61,9 @@ function validatePassword(array $data): ?string
     return null;
 }
 
-require_once "./forms/signin.phtml";
+return [
+    "./forms/signin.phtml",
+    [
+        'errors' => $errorInputs
+    ]
+];

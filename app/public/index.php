@@ -1,8 +1,10 @@
 <?php
 $requestUri=$_SERVER['REQUEST_URI'];
 
-require_once route($requestUri);
-asdasd
+$handler = route($requestUri);
+list($view, $params) = require_once $handler;
+extract($params);
+require_once $view;
 function route(string $requestUri): string
 {
     if (preg_match('#/(?<route>[a-z0-9-_]+)#', $requestUri, $params)) {

@@ -1,7 +1,7 @@
 <?php
+$errorInputs = [];
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $connection = new PDO("pgsql:host=db;dbname=dbname", 'dbuser', 'dbpwd');
-    $errorInputs = [];
     $errorInputs = validateInputs($_POST, $connection);
     if (!$errorInputs) {
         $lastname = $_POST['lastname'] ?? null;
@@ -135,5 +135,11 @@ function validatePassword(array $data): ?string
 
     return $err;
 }
-require_once "./forms/signup.phtml";
+return [
+    "./forms/signup.phtml",
+    [
+        'errors' => $errorInputs
+    ]
+];
+
 ?>
