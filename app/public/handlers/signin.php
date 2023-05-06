@@ -62,7 +62,7 @@ function validatePassword(array $data): ?string
 }
 
 return [
-    "./forms/signin.phtml",
+    "./views/signin.phtml",
     [
         'errors' => $errorInputs
     ]

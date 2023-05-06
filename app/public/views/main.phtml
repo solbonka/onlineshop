@@ -1,0 +1,163 @@
+
+<head>
+    <title>Заказать мороженое онлайн #html-templates-ru-seo-one-item-suffix Live Demo</title>
+    <meta name="Keywords">
+    <meta name="Description">
+    <meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,user-scalable=no,width=device-width">
+    <link href="//fonts.googleapis.com/css?family=Roboto|Open+Sans:200,300,400,700,800,900&amp;subset=latin" rel="preload" as="font" />
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-797221335"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        var options = clientUserId > 0 ? { 'user_id': clientUserId } : {};
+        gtag('config', 'AW-797221335', { 'allow_enhanced_conversions': true });
+        gtag('config', 'G-T7WWB0T53W', options);
+    </script>
+
+    <script>
+        var shareasaleSSCID=shareasaleGetParameterByName("sscid");function shareasaleSetCookie(e,a,r,s,t){if(e&&a){var o,n=s?"; path="+s:"",i=t?"; domain="+t:"",S="";r&&((o=new Date).setTime(o.getTime()+r),S="; expires="+o.toUTCString()),document.cookie=e+"="+a+S+n+i+"; SameSite=None;Secure"}}function shareasaleGetParameterByName(e,a){a||(a=window.location.href),e=e.replace(/[\[\]]/g,"\\$&");var r=new RegExp("[?&]"+e+"(=([^&#]*)|&|#|$)").exec(a);return r?r[2]?decodeURIComponent(r[2].replace(/\+/g," ")):"":null}shareasaleSSCID&&shareasaleSetCookie("shareasaleSSCID",shareasaleSSCID,94670778e4,"/");
+    </script>
+
+    <script src="//capp.nicepage.com/0f399d8d77c1f9d0012fc8858caffe18bebb5172/main-libs.js" ></script>
+    <link href="//capp.nicepage.com/0f399d8d77c1f9d0012fc8858caffe18bebb5172/main-libs.css" rel="stylesheet" />
+
+    <!--[if lt IE 9]>
+    <script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <meta name="robots" content="noindex, nofollow">
+    <script type="text/javascript">
+        var device = 'desktop';
+        function init($) {
+            $('#previewDesktopBtn').click(function (e) {
+                setLivePreviewFrameSize($(this));
+                setActiveResponsiveButton(this);
+                e.preventDefault();
+            });
+
+            $('#previewLaptopBtn').click(function (e) {
+                setLivePreviewFrameSize($(this));
+                setActiveResponsiveButton(this);
+                e.preventDefault();
+            });
+            $('#previewTabletBtn').click(function (e) {
+                setLivePreviewFrameSize($(this));
+                setActiveResponsiveButton(this);
+                e.preventDefault();
+            });
+            $('#previewPhoneHorizontalBtn').click(function (e) {
+                setLivePreviewFrameSize($(this));
+                setActiveResponsiveButton(this);
+                e.preventDefault();
+            });
+            $('#previewPhoneBtn').click(function (e) {
+                setLivePreviewFrameSize($(this));
+                setActiveResponsiveButton(this);
+                e.preventDefault();
+            });
+
+            detectActiveResponsiveButton();
+        }
+
+        if (jQuery.isReady) {
+            init(jQuery);
+        } else {
+            jQuery(function ($) {
+                init($);
+            });
+        }
+
+        function setActiveResponsiveButton(btn) {
+            $(".page-preview-header > a").removeClass("active");
+            $(btn).addClass("active");
+        }
+
+        function detectActiveResponsiveButton() {
+            var d = device;
+            if (!d) {
+                d = 'desktop';
+            }
+            $("#preview" + d.charAt(0).toUpperCase() + d.substr(1) + "Btn").click();
+        }
+
+        function getDataPreviewSizeAttr(el) {
+            return el.closest("[data-preview-size]").attr("data-preview-size");
+        }
+
+        function setLivePreviewFrameSize(srcEl) {
+            var getScrollbarWidth = function () {
+                var s = $('<div style="width:100px;height:100px;overflow:scroll;visibility:hidden;position:absolute;top:-99999px"><div style="height:200px;"></div></div>')
+                    .appendTo("body");
+                var res = s.width() - s.find("div").last().width();
+                s.remove();
+                return res;
+            };
+            var attr = getDataPreviewSizeAttr(srcEl);
+            $('#livePreviewFrame').width(attr.indexOf("%") !== -1 ? attr : parseInt(attr, 10) + getScrollbarWidth());
+        }
+
+    </script>
+    <style>
+
+        iframe {
+            display: none;
+        }
+
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        .page-preview {
+            border-radius: 0;
+            height: 100%;
+        }
+
+
+        .page-preview-header > a {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 4px;
+        }
+
+        .page-preview-header > a:hover {
+            background: #e2f0fc;
+            text-decoration: none;
+        }
+
+        .page-preview-header > a.active {
+            background: #c9e4f9;
+        }
+
+        .page-preview-header > .close {
+            float: right;
+            margin-right: 10px;
+        }
+
+        .page-preview-body {
+            height: calc(100% - 70px);
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .page-preview-body iframe {
+            border: none;
+            display: inline-block;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+<div class="page-preview">
+    <div class="page-preview-body">
+        <iframe id="livePreviewFrame" src="https://icecream2795.nicepage.io/ru/Home.html?version=3273d0a1-d10d-4ea9-822d-1547f828354f" width="1057" height="640" style="width:100%;"></iframe>
+    </div>
+</div>
+<a style="position:absolute;top:17px;left:10px;" href="/"><img alt="NicePage.com" src="//csite.nicepage.com/Images/logo-w.png"></a>
+
+
+</body>

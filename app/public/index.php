@@ -1,16 +1,18 @@
 <?php
-$requestUri=$_SERVER['REQUEST_URI'];
 
-$handler = route($requestUri);
-list($view, $params) = require_once $handler;
-extract($params);
-require_once $view;
-function route(string $requestUri): string
-{
-    if (preg_match('#/(?<route>[a-z0-9-_]+)#', $requestUri, $params)) {
-        if (file_exists("./{$params['route']}.php")) {
-            return "./{$params['route']}.php";
-        }
+spl_autoload_register(function ($class){
+    $appRoot = dirname(__DIR__);
+    $file = str_replace('\\', DIRECTORY_SEPARATOR, $class) . '.php';
+    $file = preg_replace("#^App#", $appRoot, $file);
+
+    if(file_exists($file)){
+        require_once $file;
+        return true;
+
     }
-    return "./forms/notfound.phtml";
-}
+    return false;
+});
+
+use App\App;
+$app = new App();
+$app->run();

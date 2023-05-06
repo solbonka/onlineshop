@@ -2,7 +2,7 @@
 session_start();
 if (isset($_SESSION['id'])) {
     return [
-        "./forms/main.phtml",[]
+        "./views/main.phtml",[]
     ];
 } else {
     header('Location: /signin');

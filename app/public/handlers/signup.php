@@ -136,7 +136,7 @@ function validatePassword(array $data): ?string
     return $err;
 }
 return [
-    "./forms/signup.phtml",
+    "./views/signup.phtml",
     [
         'errors' => $errorInputs
     ]

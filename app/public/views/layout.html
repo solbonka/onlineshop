@@ -1,0 +1,140 @@
+<header>
+
+</header>
+<div class="page-preview">
+    <div class="page-preview-header">
+        <a class="hidden-sm hidden-xs" href="#" id="previewDesktopBtn" data-preview-size="100%"><img alt="Responsive Desktop Mode" src="//csite.nicepage.com/Images/Site/responsive-desktop.png"></a>
+        <a class="hidden-sm hidden-xs" href="#" id="previewLaptopBtn" data-preview-size="1040px"><img alt="Responsive Laptop Mode" src="//csite.nicepage.com/Images/Site/responsive-laptop.png"></a>
+        <a class="hidden-xs" href="#" id="previewTabletBtn" data-preview-size="820px"><img alt="Responsive Tablet Mode" src="//csite.nicepage.com/Images/Site/responsive-tablet.png"></a>
+        <a class="hidden-xs" href="#" id="previewPhoneHorizontalBtn" data-preview-size="640px"><img alt="Responsive Phone Horizontal Mode" src="//csite.nicepage.com/Images/Site/responsive-phone-horizontal.png"></a>
+        <a class="hidden-xs" href="#" id="previewPhoneBtn" data-preview-size="440px"><img alt="Responsive Phone Mode" src="//csite.nicepage.com/Images/Site/responsive-phone.png"></a>
+        <a class="close" href="/ru/ht/1442806/zakazat-morozhenoe-onlayn-html-shablon"><img alt="Close" src="//csite.nicepage.com/Images/Site/icon-close.png"></a>
+    </div>
+
+<main>{content}</main>
+</div>
+<footer>я футер</footer>
+<style>
+
+    iframe {
+        display: none;
+    }
+
+
+    html,
+    body {
+        height: 100%;
+    }
+
+    .page-preview {
+        border-radius: 0;
+        height: 100%;
+    }
+
+    .page-preview-header {
+        background: #f2f2f2;
+        border: none;
+        height: 70px;
+        position: relative;
+        text-align: center;
+    }
+
+    .page-preview-header > a {
+        display: inline-block;
+        margin-top: 15px;
+        padding: 4px;
+    }
+
+    .page-preview-header > a:hover {
+        background: #e2f0fc;
+        text-decoration: none;
+    }
+
+    .page-preview-header > a.active {
+        background: #c9e4f9;
+    }
+
+    .page-preview-header > .close {
+        float: right;
+        margin-right: 10px;
+    }
+
+
+
+    .page-preview-body iframe {
+        border: none;
+        display: inline-block;
+        height: 100%;
+    }
+</style>
+<script type="text/javascript">
+    var device = 'desktop';
+    function init($) {
+        $('#previewDesktopBtn').click(function (e) {
+            setLivePreviewFrameSize($(this));
+            setActiveResponsiveButton(this);
+            e.preventDefault();
+        });
+
+        $('#previewLaptopBtn').click(function (e) {
+            setLivePreviewFrameSize($(this));
+            setActiveResponsiveButton(this);
+            e.preventDefault();
+        });
+        $('#previewTabletBtn').click(function (e) {
+            setLivePreviewFrameSize($(this));
+            setActiveResponsiveButton(this);
+            e.preventDefault();
+        });
+        $('#previewPhoneHorizontalBtn').click(function (e) {
+            setLivePreviewFrameSize($(this));
+            setActiveResponsiveButton(this);
+            e.preventDefault();
+        });
+        $('#previewPhoneBtn').click(function (e) {
+            setLivePreviewFrameSize($(this));
+            setActiveResponsiveButton(this);
+            e.preventDefault();
+        });
+
+        detectActiveResponsiveButton();
+    }
+
+    if (jQuery.isReady) {
+        init(jQuery);
+    } else {
+        jQuery(function ($) {
+            init($);
+        });
+    }
+
+    function setActiveResponsiveButton(btn) {
+        $(".page-preview-header > a").removeClass("active");
+        $(btn).addClass("active");
+    }
+
+    function detectActiveResponsiveButton() {
+        var d = device;
+        if (!d) {
+            d = 'desktop';
+        }
+        $("#preview" + d.charAt(0).toUpperCase() + d.substr(1) + "Btn").click();
+    }
+
+    function getDataPreviewSizeAttr(el) {
+        return el.closest("[data-preview-size]").attr("data-preview-size");
+    }
+
+    function setLivePreviewFrameSize(srcEl) {
+        var getScrollbarWidth = function () {
+            var s = $('<div style="width:100px;height:100px;overflow:scroll;visibility:hidden;position:absolute;top:-99999px"><div style="height:200px;"></div></div>')
+                .appendTo("body");
+            var res = s.width() - s.find("div").last().width();
+            s.remove();
+            return res;
+        };
+        var attr = getDataPreviewSizeAttr(srcEl);
+        $('#livePreviewFrame').width(attr.indexOf("%") !== -1 ? attr : parseInt(attr, 10) + getScrollbarWidth());
+    }
+
+</script>
