@@ -6,31 +6,44 @@ class App
     public function run(): void{
 
         $handler = $this->route();
-        list($view, $params) = require_once $handler;
+
+        if (is_array($handler)){
+            list($obj, $method) = $handler;
+            if(!is_object($obj)){
+                $obj = new $obj();
+            }
+            $response = $obj->$method();
+        }
+        else{
+            $response = $handler;
+        }
+
+        list($view, $params) = $response;
         extract($params);
 
         ob_start();
         include $view;
         $content = ob_get_clean();
-
-        $layout = file_get_contents('./views/layout.html');
-        echo $result = str_replace('{content}', $content, $layout);
-
+        $layout = file_get_contents('../views/layout.html');
+        $result = str_replace('{content}', $content, $layout);
+        echo $result;
     }
-    private function route(): ?string
+    private function route(): array|callable|null
     {
         $requestUri=$_SERVER['REQUEST_URI'];
-        foreach ($this->routes as $pattern => $handler){
-            if (preg_match("#$pattern#", $requestUri, $params)) {
-                if (file_exists($handler)) {
-                    return $handler;
-                }
+
+        foreach ($this->routes as $pattern => $handler)
+        {
+            if (preg_match("#^$pattern$#", $requestUri, $params))
+            {
+                return $handler;
             }
         }
-        return "./handlers/notfound.php";
+        return ['App\Controller\UserController', 'notFound'];
     }
 
-    public function addRoute($route, $handlerPath){
-        $this->routes[$route] = $handlerPath;
+
+    public function addRoute(string $route,callable|array $callable):void{
+        $this->routes[$route] = $callable;
     }
 }

@@ -22,7 +22,13 @@
             <input type="text" name="lastname">
         </label>
         <label class="invalid">
-            <span class="label-text"><?php echo $errorInputs['lastname'] ?? ''; ?></span>
+            <span class="label-text"><?php
+                                              $err = new \App\Controller\UserController();
+                                              $err = $err->signUp();
+                                              list($view, $params) = $err;
+                                              $errorInputs = ($params['errors']);
+                                              echo $errorInputs['lastname'] ?? ''; ?>
+            </span>
         </label>
         <label>
             <span class="label-text">Имя</span>

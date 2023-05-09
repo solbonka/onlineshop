@@ -20,11 +20,16 @@
         </div>
         <div class='box-login'>
             <div class='fieldset-body' id='login_form'>
-                <button onclick="openLoginInfo();" class='b b-form i i-more' title='Mais Informações'></button>
+                <button onclick="openLoginInfo();" class='b b-form i i-more' title='Что делать?'></button>
                 <p class='field'>
                     <label for='user'>Email</label>
                     <input type='text' id='user' name='email' title='Username'/>
-                    <span class='label-text'><?php echo $errorInputs['email'] ?? ""; ?></span>
+                    <span class='label-text'><?php $err = new \App\Controller\UserController();
+                                              $err = $err->signIn();
+                                              list($view, $params) = $err;
+                                              $errorInputs = ($params['errors']);
+                                              echo $errorInputs['email'] ?? ""; ?>
+                    </span>
                 </p>
                 <p class='field'>
                     <label for='pass'>Пароль</label>
