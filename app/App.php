@@ -18,7 +18,7 @@ class App
             $response = $obj->$method();
         }
         else{
-            $response = $handler;
+            $response = call_user_func($handler);
         }
 
         list($view, $params) = $response;
