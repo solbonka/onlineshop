@@ -1,5 +1,7 @@
 <?php
 namespace App;
+use App\Repository\UserRepository;
+
 class App
 {
     private array $routes = [];
@@ -10,10 +12,9 @@ class App
         if (is_array($handler)){
             list($obj, $method) = $handler;
             if(!is_object($obj)){
-                $obj = new $obj();
-                if ($obj instanceof ConnectionAwareInterface){
-                    $obj->setConnection(new \PDO("pgsql:host=db;dbname=dbname", 'dbuser', 'dbpwd'));
-                }
+                $connection = new \PDO("pgsql:host=db;dbname=dbname", 'dbuser', 'dbpwd');
+                $userRepository = new \App\Repository\UserRepository($connection);
+                $obj = new $obj($userRepository);
             }
             $response = $obj->$method();
         }

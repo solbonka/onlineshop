@@ -1,23 +1,21 @@
 <?php
 
 namespace App\Controller;
-use App\ConnectionAwareInterface;
-use PDO;
+use App\Repository\UserRepository;
 
-class UserController implements ConnectionAwareInterface
+
+class UserController
 {
-    private PDO $connection;
-    public function setConnection(PDO $connection): void
+    private UserRepository $userRepository;
+    public function __construct(UserRepository $userRepository)
     {
-        $this->connection = $connection;
+        $this->userRepository = $userRepository;
     }
-    public function signUp(): array{
+    public function signUp(): array
+    {
         $errorInputs = [];
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-
-            $errorInputs = $this->validateInputsSignUp($_POST, $this->connection);
-
+            $errorInputs = $this->validateInputsSignUp($_POST, $this->userRepository);
             if (!$errorInputs) {
                 $lastname = $_POST['lastname'] ?? null;
                 $firstname = $_POST['firstname'] ?? null;
@@ -28,11 +26,7 @@ class UserController implements ConnectionAwareInterface
 
                 $password = password_hash($password, PASSWORD_DEFAULT);
 
-                $sth = $this->connection->prepare("
-             INSERT INTO users (lastname, firstname, patronymic, email, phoneNumber, password)
-             VALUES (:lastname, :firstname, :patronymic, :email, :phoneNumber, :password)");
-                $sth->execute(['lastname' => $lastname, 'firstname' => $firstname, 'patronymic' => $patronymic,
-                    'email' => $email, 'phoneNumber' => $phoneNumber, 'password' => $password]);
+                $this->userRepository->create($lastname, $firstname, $patronymic, $email, $phoneNumber, $password);
             }
         }
         return [
@@ -44,7 +38,7 @@ class UserController implements ConnectionAwareInterface
 
     }
 
-    private function validateInputsSignUp(array $data, PDO $connection):array
+    private function validateInputsSignUp(array $data, UserRepository $userRepository):array
     {
         $errors = [];
         $lastnameError = $this->validateLastnameSignUp($data);
@@ -59,7 +53,7 @@ class UserController implements ConnectionAwareInterface
         if($patronymicError !== null) {
             $errors['patronymic'] = $patronymicError;
         }
-        $emailError = $this->validateEmailSignUp($data, $connection);
+        $emailError = $this->validateEmailSignUp($data, $userRepository);
         if($emailError !== null) {
             $errors['email'] = $emailError;
         }
@@ -118,7 +112,7 @@ class UserController implements ConnectionAwareInterface
 
         return $err;
     }
-    private function validateEmailSignUp(array $data, PDO $connection): ?string
+    private function validateEmailSignUp(array $data, UserRepository $userRepository): ?string
     {
         $email = $data['email'] ?? null;
         $err = null;
@@ -127,9 +121,7 @@ class UserController implements ConnectionAwareInterface
             return "Введите корректный Email";
         }
 
-        $result = $connection->prepare("SELECT email FROM users WHERE email = :email");
-        $result->execute(['email' => $email]);
-        $exists = $result->fetch(PDO::FETCH_COLUMN);
+        $exists = $this->userRepository->checkForEmail($email);
 
         if ($exists) {
             $err =  "Этот Email уже используется";
