@@ -1,17 +1,22 @@
 <?php
 
 namespace App\Controller;
+use App\ConnectionAwareInterface;
 use PDO;
 
-class UserController
+class UserController implements ConnectionAwareInterface
 {
-
+    private PDO $connection;
+    public function setConnection(PDO $connection): void
+    {
+        $this->connection = $connection;
+    }
     public function signUp(): array{
         $errorInputs = [];
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-            $connection = new PDO("pgsql:host=db;dbname=dbname", 'dbuser', 'dbpwd');
-            $errorInputs = $this->validateInputsSignUp($_POST, $connection);
+
+            $errorInputs = $this->validateInputsSignUp($_POST, $this->connection);
 
             if (!$errorInputs) {
                 $lastname = $_POST['lastname'] ?? null;
@@ -23,7 +28,7 @@ class UserController
 
                 $password = password_hash($password, PASSWORD_DEFAULT);
 
-                $sth = $connection->prepare("
+                $sth = $this->connection->prepare("
              INSERT INTO users (lastname, firstname, patronymic, email, phoneNumber, password)
              VALUES (:lastname, :firstname, :patronymic, :email, :phoneNumber, :password)");
                 $sth->execute(['lastname' => $lastname, 'firstname' => $firstname, 'patronymic' => $patronymic,
@@ -33,7 +38,7 @@ class UserController
         return [
             "../views/signup.phtml",
             [
-                'errors' => $errorInputs
+                'errorInputs' => $errorInputs
             ]
         ];
 
@@ -98,7 +103,7 @@ class UserController
 
         return $err;
     }
-    function validatePatronymicSignUp(array $data): ?string
+    private function validatePatronymicSignUp(array $data): ?string
     {
         $patronymic = $data['patronymic'] ?? null;
         $err = null;
@@ -113,7 +118,7 @@ class UserController
 
         return $err;
     }
-    function validateEmailSignUp(array $data, PDO $connection): ?string
+    private function validateEmailSignUp(array $data, PDO $connection): ?string
     {
         $email = $data['email'] ?? null;
         $err = null;
@@ -132,7 +137,7 @@ class UserController
 
         return $err;
     }
-    function validatePhoneNumberSignUp(array $data): ?string
+    private function validatePhoneNumberSignUp(array $data): ?string
     {
         $phoneNumber = $data['phoneNumber'] ?? null;
         $err=null;
@@ -143,7 +148,7 @@ class UserController
 
         return $err;
     }
-    function validatePasswordSignUp(array $data): ?string
+    private function validatePasswordSignUp(array $data): ?string
     {
         $password = $data['password'] ?? null;
         $err = null;
@@ -154,9 +159,9 @@ class UserController
         return $err;
     }
     public function signIn(): array{
-        if(session_status() === PHP_SESSION_NONE){
-            session_start();
-        }
+
+        session_start();
+
 
         $errorInputs = [];
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -164,8 +169,7 @@ class UserController
             if (!$errorInputs) {
                 $email = $_POST['email'];
                 $password = $_POST['password'];
-                $connection = new PDO("pgsql:host=db;dbname=dbname", 'dbuser', 'dbpwd');
-                $stmt = $connection->prepare('SELECT * FROM users WHERE email=?');
+                $stmt = $this->connection->prepare('SELECT * FROM users WHERE email=?');
                 $stmt->execute([$email]);
                 $user = $stmt->fetch();
                 if ($user && password_verify($password, $user['password'])) {
@@ -182,7 +186,7 @@ class UserController
         return [
             "../views/signin.phtml",
             [
-                'errors' => $errorInputs
+                'errorInputs' => $errorInputs
             ]
         ];
     }
@@ -199,7 +203,7 @@ class UserController
         }
         return $errors;
     }
-    public function validateEmailSignIn(array $data): ?string
+    private function validateEmailSignIn(array $data): ?string
     {
         $email = $data['email'] ?? null;
 
@@ -213,7 +217,7 @@ class UserController
 
         return null;
     }
-    public function validatePasswordSignIn(array $data): ?string
+    private function validatePasswordSignIn(array $data): ?string
     {
         $password = $data['password'] ?? null;
 
@@ -226,24 +230,5 @@ class UserController
         }
 
         return null;
-    }
-    public function main(): array
-    {
-      session_start();
-        if (isset($_SESSION['id'])) {
-            return [
-                "../views/main.phtml",[]
-            ];
-        }
-        header('Location: /signin');
-        return [];
-    }
-
-    public function notFound(): array
-    {
-        return[
-            "../views/notfound.phtml",
-            []
-        ];
     }
 }

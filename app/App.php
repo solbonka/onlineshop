@@ -11,6 +11,9 @@ class App
             list($obj, $method) = $handler;
             if(!is_object($obj)){
                 $obj = new $obj();
+                if ($obj instanceof ConnectionAwareInterface){
+                    $obj->setConnection(new \PDO("pgsql:host=db;dbname=dbname", 'dbuser', 'dbpwd'));
+                }
             }
             $response = $obj->$method();
         }
@@ -30,20 +33,32 @@ class App
     }
     private function route(): array|callable|null
     {
-        $requestUri=$_SERVER['REQUEST_URI'];
+        $requestUri = $_SERVER['REQUEST_URI'];
+        $method = $_SERVER['REQUEST_METHOD'];
 
-        foreach ($this->routes as $pattern => $handler)
+        foreach ($this->routes[$method] as $pattern => $handler)
         {
             if (preg_match("#^$pattern$#", $requestUri, $params))
             {
                 return $handler;
             }
         }
-        return ['App\Controller\UserController', 'notFound'];
+        return ['App\Controller\NotFound', 'notFound'];
     }
 
 
-    public function addRoute(string $route,callable|array $callable):void{
-        $this->routes[$route] = $callable;
+    public function addRoute(string $route, callable|array $callable )
+    {
+      $this->routes[$route] = $callable;
     }
+
+    public function get(string $route, array|callable $handler)
+    {
+        $this->routes['GET'][$route] = $handler;
+    }
+
+    public function post(string $route, array|callable $callable){
+        $this->routes['POST'][$route] = $callable;
+    }
+
 }
