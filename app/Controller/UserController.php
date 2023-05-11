@@ -15,7 +15,7 @@ class UserController
     {
         $errorInputs = [];
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $errorInputs = $this->validateInputsSignUp($_POST, $this->userRepository);
+            $errorInputs = $this->validateInputsSignUp($_POST);
             if (!$errorInputs) {
                 $lastname = $_POST['lastname'] ?? null;
                 $firstname = $_POST['firstname'] ?? null;
@@ -38,7 +38,7 @@ class UserController
 
     }
 
-    private function validateInputsSignUp(array $data, UserRepository $userRepository):array
+    private function validateInputsSignUp(array $data):array
     {
         $errors = [];
         $lastnameError = $this->validateLastnameSignUp($data);
@@ -53,7 +53,7 @@ class UserController
         if($patronymicError !== null) {
             $errors['patronymic'] = $patronymicError;
         }
-        $emailError = $this->validateEmailSignUp($data, $userRepository);
+        $emailError = $this->validateEmailSignUp($data);
         if($emailError !== null) {
             $errors['email'] = $emailError;
         }
@@ -112,7 +112,7 @@ class UserController
 
         return $err;
     }
-    private function validateEmailSignUp(array $data, UserRepository $userRepository): ?string
+    private function validateEmailSignUp(array $data): ?string
     {
         $email = $data['email'] ?? null;
         $err = null;
@@ -150,10 +150,9 @@ class UserController
 
         return $err;
     }
-    public function signIn(): array{
-
+    public function signIn(): array
+    {
         session_start();
-
 
         $errorInputs = [];
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -161,9 +160,8 @@ class UserController
             if (!$errorInputs) {
                 $email = $_POST['email'];
                 $password = $_POST['password'];
-                $stmt = $this->connection->prepare('SELECT * FROM users WHERE email=?');
-                $stmt->execute([$email]);
-                $user = $stmt->fetch();
+                $user = $this->userRepository->getDataByEmail($email);
+
                 if ($user && password_verify($password, $user['password'])) {
                     $_SESSION['id'] = $user['id'];
                     header("Location: /main");

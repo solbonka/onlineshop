@@ -5,6 +5,10 @@ use App\Repository\UserRepository;
 class App
 {
     private array $routes = [];
+
+    public function __construct(private Container $container)
+    {
+    }
     public function run(): void{
 
         $handler = $this->route();
@@ -12,9 +16,7 @@ class App
         if (is_array($handler)){
             list($obj, $method) = $handler;
             if(!is_object($obj)){
-                $connection = new \PDO("pgsql:host=db;dbname=dbname", 'dbuser', 'dbpwd');
-                $userRepository = new \App\Repository\UserRepository($connection);
-                $obj = new $obj($userRepository);
+                $obj = $this->container->get($obj);
             }
             $response = $obj->$method();
         }

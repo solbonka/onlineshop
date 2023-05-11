@@ -19,8 +19,14 @@ class UserRepository
     }
     public function checkForEmail(string $email)
     {
-        $result = $this->connection->prepare("SELECT email FROM users WHERE email = :email");
-        $result->execute(['email' => $email]);
+        $result = $this->connection->prepare("SELECT email FROM users WHERE email = ?");
+        $result->execute([$email]);
         return $result->fetch(PDO::FETCH_COLUMN);
+    }
+    public function getDataByEmail(string $email)
+    {
+        $result = $this->connection->prepare("SELECT * FROM users WHERE email = ?");
+        $result->execute([$email]);
+        return $result->fetch();
     }
 }
