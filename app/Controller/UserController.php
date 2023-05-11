@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 use App\Repository\UserRepository;
+use App\Entity\User;
 
 
 class UserController
@@ -17,6 +18,7 @@ class UserController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errorInputs = $this->validateInputsSignUp($_POST);
             if (!$errorInputs) {
+
                 $lastname = $_POST['lastname'] ?? null;
                 $firstname = $_POST['firstname'] ?? null;
                 $patronymic = $_POST['patronymic'] ?? null;
@@ -25,8 +27,8 @@ class UserController
                 $password = $_POST['password'] ?? null;
 
                 $password = password_hash($password, PASSWORD_DEFAULT);
-
-                $this->userRepository->create($lastname, $firstname, $patronymic, $email, $phoneNumber, $password);
+                $user = new User($firstname, $lastname, $patronymic, $email, $phoneNumber, $password);
+                $this->userRepository->create($user);
             }
         }
         return [
@@ -162,8 +164,8 @@ class UserController
                 $password = $_POST['password'];
                 $user = $this->userRepository->getDataByEmail($email);
 
-                if ($user && password_verify($password, $user['password'])) {
-                    $_SESSION['id'] = $user['id'];
+                if ($user && password_verify($password, $user->getPassword())) {
+                    $_SESSION['id'] = $user->getId();
                     header("Location: /main");
                 }
                 else {

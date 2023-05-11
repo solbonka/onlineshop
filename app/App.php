@@ -1,6 +1,6 @@
 <?php
 namespace App;
-use App\Repository\UserRepository;
+
 
 class App
 {
@@ -41,7 +41,7 @@ class App
 
         foreach ($this->routes[$method] as $pattern => $handler)
         {
-            if (preg_match("#^$pattern$#", $requestUri, $params))
+            if (preg_match("#^$pattern$#", $requestUri))
             {
                 return $handler;
             }
@@ -49,18 +49,13 @@ class App
         return ['App\Controller\NotFound', 'notFound'];
     }
 
-
-    public function addRoute(string $route, callable|array $callable )
-    {
-      $this->routes[$route] = $callable;
-    }
-
-    public function get(string $route, array|callable $handler)
+    public function get(string $route, array|callable $handler): void
     {
         $this->routes['GET'][$route] = $handler;
     }
 
-    public function post(string $route, array|callable $callable){
+    public function post(string $route, array|callable $callable): void
+    {
         $this->routes['POST'][$route] = $callable;
     }
 

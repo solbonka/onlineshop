@@ -3,20 +3,19 @@ require_once '../Autoloader.php';
 Autoloader::register(dirname(__DIR__));
 
 use App\App;
+use App\Container;
 use App\Controller\Main;
 use App\Controller\UserController;
 use App\Repository\UserRepository;
 
-$container = new \App\Container();
-$container->set(UserController::class, function (\App\Container $container){
+$container = new Container();
+$container->set(UserController::class, function (Container $container){
     $userRepository = $container->get(UserRepository::class);
-    $obj = new UserController($userRepository);
-    return $obj;
+    return new UserController($userRepository);
 });
 $container->set(UserRepository::class, function (){
     $connection = new PDO("pgsql:host=db;dbname=dbname", 'dbuser', 'dbpwd');
-    $userRepository = new \App\Repository\UserRepository($connection);
-    return $userRepository;
+    return new UserRepository($connection);
 });
 
 $app = new App($container);
