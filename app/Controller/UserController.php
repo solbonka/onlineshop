@@ -121,7 +121,7 @@ class UserController
             return "Введите корректный Email";
         }
 
-        $exists = $this->userRepository->checkForEmail($email);
+        $exists = $this->userRepository->getDataByEmail($email);
 
         if ($exists) {
             $err =  "Этот Email уже используется";

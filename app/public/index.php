@@ -8,9 +8,8 @@ use App\Controller\UserController;
 use App\Repository\UserRepository;
 
 $container = new \App\Container();
-$container->set(UserController::class, function (){
-    $connection = new PDO("pgsql:host=db;dbname=dbname", 'dbuser', 'dbpwd');
-    $userRepository = new \App\Repository\UserRepository($connection);
+$container->set(UserController::class, function (\App\Container $container){
+    $userRepository = $container->get(UserRepository::class);
     $obj = new UserController($userRepository);
     return $obj;
 });
@@ -19,7 +18,7 @@ $container->set(UserRepository::class, function (){
     $userRepository = new \App\Repository\UserRepository($connection);
     return $userRepository;
 });
-$container->get(UserRepository::class);
+
 $app = new App($container);
 $app->get('/signup', [UserController::class, 'signUp']);
 $app->post('/signup', [UserController::class, 'signUp']);

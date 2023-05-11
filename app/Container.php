@@ -16,6 +16,6 @@ class Container
         if (!isset($this->services[$name])){
             return new $name();
         }
-        return call_user_func($this->services[$name]);
+        return $this->services[$name]($this);
     }
 }
