@@ -29,8 +29,8 @@ class UserRepository
         $result->execute([$email]);
         $userData = $result->fetch(PDO::FETCH_ASSOC);
         $user = null;
-        if ($userData)
-        {   $user = new User($userData['lastname'], $userData['firstname'], $userData['patronymic'],
+        if ($userData) {
+            $user = new User($userData['lastname'], $userData['firstname'], $userData['patronymic'],
             $userData['email'], $userData['phonenumber'], $userData['password']);
             $user->setId($userData['id']);
         }

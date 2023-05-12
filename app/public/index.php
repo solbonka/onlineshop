@@ -6,17 +6,11 @@ use App\App;
 use App\Container;
 use App\Controller\Main;
 use App\Controller\UserController;
-use App\Repository\UserRepository;
 
-$container = new Container();
-$container->set(UserController::class, function (Container $container){
-    $userRepository = $container->get(UserRepository::class);
-    return new UserController($userRepository);
-});
-$container->set(UserRepository::class, function (){
-    $connection = new PDO("pgsql:host=db;dbname=dbname", 'dbuser', 'dbpwd');
-    return new UserRepository($connection);
-});
+$dependencies = include '../Config/dependencies.php';
+$settings = include '../Config/settings.php';
+$data = array_merge($dependencies, $settings);
+$container = new Container($data);
 
 $app = new App($container);
 $app->get('/signup', [UserController::class, 'signUp']);
