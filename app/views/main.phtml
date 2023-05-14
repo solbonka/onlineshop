@@ -1,163 +1,365 @@
-
-<head>
-    <title>Заказать мороженое онлайн #html-templates-ru-seo-one-item-suffix Live Demo</title>
-    <meta name="Keywords">
-    <meta name="Description">
-    <meta name="viewport" content="initial-scale=1.0,maximum-scale=1.0,user-scalable=no,width=device-width">
-    <link href="//fonts.googleapis.com/css?family=Roboto|Open+Sans:200,300,400,700,800,900&amp;subset=latin" rel="preload" as="font" />
-
-    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-797221335"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-
-        var options = clientUserId > 0 ? { 'user_id': clientUserId } : {};
-        gtag('config', 'AW-797221335', { 'allow_enhanced_conversions': true });
-        gtag('config', 'G-T7WWB0T53W', options);
-    </script>
-
-    <script>
-        var shareasaleSSCID=shareasaleGetParameterByName("sscid");function shareasaleSetCookie(e,a,r,s,t){if(e&&a){var o,n=s?"; path="+s:"",i=t?"; domain="+t:"",S="";r&&((o=new Date).setTime(o.getTime()+r),S="; expires="+o.toUTCString()),document.cookie=e+"="+a+S+n+i+"; SameSite=None;Secure"}}function shareasaleGetParameterByName(e,a){a||(a=window.location.href),e=e.replace(/[\[\]]/g,"\\$&");var r=new RegExp("[?&]"+e+"(=([^&#]*)|&|#|$)").exec(a);return r?r[2]?decodeURIComponent(r[2].replace(/\+/g," ")):"":null}shareasaleSSCID&&shareasaleSetCookie("shareasaleSSCID",shareasaleSSCID,94670778e4,"/");
-    </script>
-
-    <script src="//capp.nicepage.com/0f399d8d77c1f9d0012fc8858caffe18bebb5172/main-libs.js" ></script>
-    <link href="//capp.nicepage.com/0f399d8d77c1f9d0012fc8858caffe18bebb5172/main-libs.css" rel="stylesheet" />
-
-    <!--[if lt IE 9]>
-    <script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
-    <meta name="robots" content="noindex, nofollow">
-    <script type="text/javascript">
-        var device = 'desktop';
-        function init($) {
-            $('#previewDesktopBtn').click(function (e) {
-                setLivePreviewFrameSize($(this));
-                setActiveResponsiveButton(this);
-                e.preventDefault();
-            });
-
-            $('#previewLaptopBtn').click(function (e) {
-                setLivePreviewFrameSize($(this));
-                setActiveResponsiveButton(this);
-                e.preventDefault();
-            });
-            $('#previewTabletBtn').click(function (e) {
-                setLivePreviewFrameSize($(this));
-                setActiveResponsiveButton(this);
-                e.preventDefault();
-            });
-            $('#previewPhoneHorizontalBtn').click(function (e) {
-                setLivePreviewFrameSize($(this));
-                setActiveResponsiveButton(this);
-                e.preventDefault();
-            });
-            $('#previewPhoneBtn').click(function (e) {
-                setLivePreviewFrameSize($(this));
-                setActiveResponsiveButton(this);
-                e.preventDefault();
-            });
-
-            detectActiveResponsiveButton();
-        }
-
-        if (jQuery.isReady) {
-            init(jQuery);
-        } else {
-            jQuery(function ($) {
-                init($);
-            });
-        }
-
-        function setActiveResponsiveButton(btn) {
-            $(".page-preview-header > a").removeClass("active");
-            $(btn).addClass("active");
-        }
-
-        function detectActiveResponsiveButton() {
-            var d = device;
-            if (!d) {
-                d = 'desktop';
-            }
-            $("#preview" + d.charAt(0).toUpperCase() + d.substr(1) + "Btn").click();
-        }
-
-        function getDataPreviewSizeAttr(el) {
-            return el.closest("[data-preview-size]").attr("data-preview-size");
-        }
-
-        function setLivePreviewFrameSize(srcEl) {
-            var getScrollbarWidth = function () {
-                var s = $('<div style="width:100px;height:100px;overflow:scroll;visibility:hidden;position:absolute;top:-99999px"><div style="height:200px;"></div></div>')
-                    .appendTo("body");
-                var res = s.width() - s.find("div").last().width();
-                s.remove();
-                return res;
-            };
-            var attr = getDataPreviewSizeAttr(srcEl);
-            $('#livePreviewFrame').width(attr.indexOf("%") !== -1 ? attr : parseInt(attr, 10) + getScrollbarWidth());
-        }
-
-    </script>
-    <style>
-
-        iframe {
-            display: none;
-        }
+<div class="menu">
+    <div class="container menu__container">
+        <div class="catalog">
+            <div class="catalog__wrapper">
+                <div class="catalog__header"><span>Категории</span><i class="fa fa-bars catalog__header-icon"></i></div>
+                <ul class="catalog__list">
 
 
-        html,
-        body {
-            height: 100%;
-        }
+                    <li class="catalog__item">
+                        <a href="/" class="catalog__link">
+                            <img src="https://sun9-3.userapi.com/impg/E6k_BrfglFRZJU6QmeWHNa_z-trS5QKGwLWpyA/h8xM43g8VyA.jpg?size=30x30&quality=96&sign=dc9936df46b5af806a62d595153e7826&type=album" alt="Desktops" class="catalog__link-img">
+                            Контейнеры
+                        </a>
+                        <div class="catalog__subCatalog">
+                            <?php
+                            /** @var Product[] $products */
+                            use App\Entity\Product;
+                            foreach($products as $product): ?>
+                            <div class="catalog__subCatalog__item">
+                                <div class="product catalog__product">
+                                  <img src="<?=$product->getImage() ?>" alt="" class="product__img">
+                                  <div class="product__content">
+                                    <h3 class="product__title"><?=$product->getName(); ?></h3>
+                                    <p class="product__description"><?=$product->getWeight(); ?> грамм </p>
+                                  </div>
+                                  <footer class="product__footer">
+                                    <div class="product__bottom">
+                                      <div class="product__price">
+                                        <span class="product__price-value"><?=$product->getPrice(); ?></span>
+                                        <span class="product__currency">&#8381;</span>
+                                      </div>
+                                      <button class="btn product__btn" type="button">заказать</button>
+                                    </div>
+                                  </footer>
+                                </div>
+                            </div>
+                            <?php endforeach; ?>
+                        </div>
+                        
+                    </li>
 
-        .page-preview {
-            border-radius: 0;
-            height: 100%;
-        }
-
-
-        .page-preview-header > a {
-            display: inline-block;
-            margin-top: 15px;
-            padding: 4px;
-        }
-
-        .page-preview-header > a:hover {
-            background: #e2f0fc;
-            text-decoration: none;
-        }
-
-        .page-preview-header > a.active {
-            background: #c9e4f9;
-        }
-
-        .page-preview-header > .close {
-            float: right;
-            margin-right: 10px;
-        }
-
-        .page-preview-body {
-            height: calc(100% - 70px);
-            overflow: hidden;
-            text-align: center;
-        }
-
-        .page-preview-body iframe {
-            border: none;
-            display: inline-block;
-            height: 100%;
-        }
-    </style>
-</head>
-<body>
-<div class="page-preview">
-    <div class="page-preview-body">
-        <iframe id="livePreviewFrame" src="https://icecream2795.nicepage.io/ru/Home.html?version=3273d0a1-d10d-4ea9-822d-1547f828354f" width="1057" height="640" style="width:100%;"></iframe>
+                    <!---
+                    <li class="catalog__item">
+                        <a href="/" class="catalog__link"><img src="https://sun9-67.userapi.com/impg/AGceuczHxdIbTIBEXUVxm6HdVIBnje_LG87GWA/kJ5TGgrwomE.jpg?size=30x25&quality=96&sign=c5a50e9d24c0cf83aa31e8fc52156169&type=album" alt="Laptops & Notebooks" class="catalog__link-img">Ведерки</a>
+                        <div class="catalog__subcatalog">
+                            <a href="/" class="catalog__subcatalog-link">Macs (0)</a>
+                            <a href="/" class="catalog__subcatalog-link">Windows (1)</a>
+                        </div>
+                    </li>
+                    <li class="catalog__item">
+                        <a href="/" class="catalog__link"><img src="https://sun2.megafon-irkutsk.userapi.com/impg/CYi0EhHIgdDlIn-gk0ssjir5IkTrpC5s1X4otA/yrIbaytV0-8.jpg?size=29x30&quality=96&sign=740b98622199d69259abe672c1a79785&type=album" alt="Components" class="catalog__link-img">Стаканчики</a>
+                        <div class="catalog__subcatalog">
+                            <a href="/" class="catalog__subcatalog-link">Mice and Trackballs (0)</a>
+                            <a href="/" class="catalog__subcatalog-link">Monitors (1)</a>
+                            <a href="/" class="catalog__subcatalog-link">Printers (0)</a>
+                            <a href="" class="catalog__subcatalog-link">Scanners (0)</a>
+                            <a href="" class="catalog__subcatalog-link">Web Cameras (0)</a>
+                        </div>
+                    </li>
+                    <li class="catalog__item">
+                        <a href="/" class="catalog__link"><img src="https://sun9-77.userapi.com/impg/upuhM4vgC5Ndbl--At-k6ETaP9OWbP5J2dm6zQ/5hZLUZKy4xQ.jpg?size=30x28&quality=96&sign=627bdf190d8b19893dd296d3cffc387f&type=album" alt="Tablets" class="catalog__link-img">Рожки</a>
+                    </li>
+                    <li class="catalog__item">
+                        <a href="/" class="catalog__link"><img src="https://sun9-39.userapi.com/impg/T9P_PrKOYA48aSCFFI-tFDES-sRmJixJqYN9iA/r4zmHlR3rLA.jpg?size=30x30&quality=96&sign=0aa9235cfdd9ce0776c8d5e8b6715b1d&type=album" alt="Software" class="catalog__link-img">Брикеты</a>
+                    </li>
+                    <li class="catalog__item">
+                        <a href="/" class="catalog__link"><img src="https://sun9-79.userapi.com/impg/wnsQCadd_URIermfMC8F5nMejOcWFXoC84oWLg/hu9w0nDfRwQ.jpg?size=30x30&quality=96&sign=7614273a56125866c51c6cd135fb5eb8&type=album" alt="Phones & PDAs" class="catalog__link-img">Эскимо</a>
+                    </li>
+                    --->
+                </ul>
+            </div>
+        </div>
+        <nav class="menu__nav">
+            <a href="/" class="menu__nav-link">My Account</a>
+            <a href="/" class="menu__nav-link">Wish List</a>
+            <a href="/" class="menu__nav-link">Shopping Cart</a>
+            <a href="/" class="menu__nav-link">Checkout</a>
+        </nav>
+        <a href="tel:+99999999999" class="menu__phone"><i class="fa fa-phone menu__phone-icon"></i> <span class="menu__phone-span">Call us:</span> +9 999 99 999 99</a>
     </div>
 </div>
-<a style="position:absolute;top:17px;left:10px;" href="/"><img alt="NicePage.com" src="//csite.nicepage.com/Images/logo-w.png"></a>
+<div class="slider">
+
+    <div class="container">
+        <div class="slider__wrapper">
+            <div class="slider__carousel">
+                <div class="slider__carousel_item">
+                    <div class="slider__carousel_desc">
+                        <p class="slider__carousel_desc-title">Мороженое</p>
+                        <p class="slider__carousel_desc-text">Очень вкусное</p>
+                        <p class="slider__carousel_desc-text">Любят все</p>
+                        <a href="/" class="slider__carousel_button">More</a>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+    .menu {
+        height: 60px;
+    }
+    .menu__container {
+        position: relative;
+    }
+    .catalog {
+        position: absolute;
+        width: 260px;
+        top: 0;
+        background-color: #fff;
+    }
+    .catalog__header {
+        height: 60px;
+        font-weight: bold;
+        padding-left: 20px;
+        padding-right: 20px;
+        border: 1px solid #e0e0e0;
+        border-bottom: none;
+        border-top: none;
+        justify-content: space-between;
+        align-items: center;
+        display: flex;
+    }
+    .catalog__header-icon {
+        font-size: 21px;
+    }
+    .catalog__list {
+        position: relative;
+        z-index: 2;
+    }
+    .catalog__link {
+        height: 60px;
+        font-size: 14px;
+        padding-left: 20px;
+        padding-right: 20px;
+        border: 1px solid #e0e0e0;
+        border-bottom: none;
+        align-items: center;
+        display: flex;
+    }
+    .catalog__link-img {
+        margin-right: 10px;
+        margin-top: -3px;
+    }
+    .catalog__subCatalog {
+        width: 867px;
+        display: flex;
+        flex-wrap: wrap;
+        background-color: white;
+        position: absolute;
+        opacity: 0;
+        visibility: hidden;
+        left: 280px;
+        top: 0;
+        height: auto;
+        padding: 20px;
+        transition: all .3s;
+    }
+    .catalog__subCatalog__item {
+        width: calc(100% / 3);
+        margin-bottom: 90px;
+        padding: 0 35px;
+        position: relative;
+    }
+    .catalog__subCatalog__item::before {
+        content: '';
+        background: #f7f7f7;
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 3px;
+        height: 100%;
+        transform: translateX(-50%);
+    }
+    .catalog__subCatalog__item:nth-of-type(2n + 1)::before {
+        content: none;
+    }
+    .catalog__product {
+        width: 270px;
+        max-width: 100%;
+        margin: 0 auto;
+        border-bottom: 2px solid #f7f7f7;
+        padding-bottom: 50px;
+    }
+    .product {
+        display: flex;
+        flex-direction: column;
+    }
+    .btn {
+        background: #ff5441;
+        color: #fff;
+        display: inline-block;
+        padding: 18px 20px;
+        width: 240px;
+        max-width: 100%;
+        border-radius: 28px;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 900;
+        font-size: 18px;
+        border: 0;
+        cursor: pointer;
+        text-align: center;
+        letter-spacing: .02em;
+        box-shadow: 0px 0px 38px 0px rgba(212, 66, 50, 0.8);
+        transition: color .2s, background .2s, opacity .2s;
+    }
+    .product img{
+        max-height: 200px;
+        width: auto;
+    }
+    .product__img {
+        display: block;
+        margin: 0 auto 15px;
+    }
+
+    .product__title {
+        margin: 0 0 10px;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 900;
+        font-size: 22px;
+    }
+
+    .product__description {
+        margin: 0;
+        color: #9f9f9f;
+    }
+
+    .product__content {
+        margin-bottom: 25px;
+        flex-grow: 1;
+    }
 
 
-</body>
+    .product__price {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 22px;
+        font-weight: 900;
+    }
+    .product__footer{
+        background: gold;
+        border-bottom-left-radius: 25px;
+        border-bottom-right-radius: 25px;
+    }
+
+    .product__bottom {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .product__btn {
+        box-shadow: none;
+        background: crimson;
+        width: 150px;
+        padding: 14px 20px;
+    }
+
+    .product__btn:hover {
+        background: red;
+    }
+
+    .catalog__item:hover .catalog__subCatalog {
+        opacity: 1;
+        visibility: visible;
+        left: 260px;
+    }
+
+    .menu__nav {1
+        padding-left: 290px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
+    .menu__nav-link {
+        font-weight: bold;
+        font-size: 14px;
+        padding-right: 20px;
+        transition: all .3s;
+    }
+    .menu__phone {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        color: #cb2d41;
+        font-size: 14px;
+        font-weight: bold;
+        margin-left: auto;
+        border-left: 1px solid #e0e0e0;
+        padding-left: 40px;
+        height: 60px;
+    }
+    .menu__phone-icon {
+        font-size: 18px;
+    }
+    .menu__phone-span {
+        padding-left: 10px;
+        padding-right: 5px;
+        color: #111;
+        transition: all .3s;
+    }
+    .menu__phone:hover .menu__phone-span {
+        color: #cb2d41;
+    }
+    .slider {
+        background-image: url(https://media.istockphoto.com/id/1222009180/ru/%D1%84%D0%BE%D1%82%D0%BE/%D0%BC%D0%BE%D1%80%D0%BE%D0%B6%D0%B5%D0%BD%D0%BE%D0%B5-%D0%BC%D0%B5%D1%80%D0%BD%D1%8B%D0%B5-%D0%BB%D0%BE%D0%B6%D0%BA%D0%B8-%D0%B2-%D0%BA%D0%BE%D0%BD%D1%83%D1%81%D0%B0%D1%85-%D1%81-%D0%BA%D0%BE%D0%BF%D0%B8%D0%B5%D0%B9-%D0%BF%D1%80%D0%BE%D1%81%D1%82%D1%80%D0%B0%D0%BD%D1%81%D1%82%D0%B2%D0%B0-%D0%BD%D0%B0-%D1%81%D0%B8%D0%BD%D0%B8%D0%B9.jpg?s=612x612&w=0&k=20&c=32Ojv36cb5WfnSOr9C3eklQcFUDfjbNivSHyAwpbVz8=);
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-attachment: fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+        height: 541px;
+    }
+    .slider__wrapper {
+        width: 600px;
+        margin-left: 400px;
+        height: 541px;
+    }
+    .slider__carousel_desc {
+        position: absolute;
+        top: 110px;
+        color: #fff;
+    }
+    .slider__carousel_desc-title {
+        font-size: 90px;
+        color: crimson;
+    }
+    .slider__carousel_desc-text {
+        font-size: 35px;
+        padding-top: 5px;
+    }
+    .slider__carousel_desc-text {
+        font-size: 35px;
+        padding-top: 5px;
+    }
+    .slider__carousel_button {
+        color: #fff;
+        font-size: 14px;
+        font-weight: bold;
+        text-transform: uppercase;
+        background-color: #cb2d41;
+        width: 160px;
+        height: 50px;
+        margin-top: 20px;
+        transition: all .3s;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .slider__carousel_button:hover {
+        background-color: #111;
+        color: #fff;
+    }
+    .slider__carousel{
+        width: 100%;
+        position: relative;
+        z-index: 1;
+    }
+</style>

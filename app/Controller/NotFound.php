@@ -8,7 +8,8 @@ class NotFound
     {
         return[
             "../views/notfound.phtml",
-            []
+            [],
+            false
         ];
     }
 }

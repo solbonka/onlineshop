@@ -2,10 +2,10 @@
 return [
     'settings' => [
         'db' => [
-            'host' => 'db',
-            'user' => 'dbuser',
-            'database' => 'dbname',
-            'password' => 'dbpwd'
+            'host' => getenv('DB_HOST'),
+            'user' => getenv('DB_USER'),
+            'database' => getenv('DB_NAME'),
+            'password' => getenv('DB_PASSWORD')
         ]
     ]
 ];

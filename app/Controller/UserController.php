@@ -35,7 +35,8 @@ class UserController
             "../views/signup.phtml",
             [
                 'errorInputs' => $errorInputs
-            ]
+            ],
+            false
         ];
 
     }
@@ -179,7 +180,8 @@ class UserController
             "../views/signin.phtml",
             [
                 'errorInputs' => $errorInputs
-            ]
+            ],
+            false
         ];
     }
     public function validateInputsSignIn(array $data):array

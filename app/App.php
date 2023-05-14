@@ -8,7 +8,7 @@ class App
     {
     }
     public function run(): void{
-        try{
+        //try{
             $handler = $this->route();
             if (is_array($handler)){
                 list($obj, $method) = $handler;
@@ -21,24 +21,26 @@ class App
                 $response = call_user_func($handler);
             }
 
-            list($view, $params) = $response;
+            list($view, $params, $isLayout) = $response;
             extract($params);
 
             ob_start();
             include $view;
-            $content = ob_get_clean();
-            $layout = file_get_contents('../views/layout.html');
-            $result = str_replace('{content}', $content, $layout);
-            echo $result;
-        } catch (\Throwable $exception) {
-            $logger = $this->container->get(LoggerInterface::class);
-            $data = ['Message' => $exception->getMessage(),
-                   'File' => $exception->getFile(),
-                   'Line' => $exception->getLine()
-            ];
-            $logger->error('Произошла ошибка во время обработки запроса', $data);
-            require_once '../views/InternalError.phtml';
-        }
+            if ($isLayout) {
+                $content = ob_get_clean();
+                $layout = file_get_contents('../views/layout.html');
+                $result = str_replace('{content}', $content, $layout);
+                echo $result;
+            }
+       //} catch (\Throwable $exception) {
+       //    $logger = $this->container->get(LoggerInterface::class);
+       //    $data = ['Message' => $exception->getMessage(),
+       //           'File' => $exception->getFile(),
+       //           'Line' => $exception->getLine()
+       //    ];
+       //    $logger->error('Произошла ошибка во время обработки запроса', $data);
+       //    require_once '../views/InternalError.phtml';
+       //}
     }
     private function route(): array|callable|null
     {

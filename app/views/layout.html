@@ -1,140 +1,206 @@
-<header>
-
-</header>
-<div class="page-preview">
-    <div class="page-preview-header">
-        <a class="hidden-sm hidden-xs" href="#" id="previewDesktopBtn" data-preview-size="100%"><img alt="Responsive Desktop Mode" src="//csite.nicepage.com/Images/Site/responsive-desktop.png"></a>
-        <a class="hidden-sm hidden-xs" href="#" id="previewLaptopBtn" data-preview-size="1040px"><img alt="Responsive Laptop Mode" src="//csite.nicepage.com/Images/Site/responsive-laptop.png"></a>
-        <a class="hidden-xs" href="#" id="previewTabletBtn" data-preview-size="820px"><img alt="Responsive Tablet Mode" src="//csite.nicepage.com/Images/Site/responsive-tablet.png"></a>
-        <a class="hidden-xs" href="#" id="previewPhoneHorizontalBtn" data-preview-size="640px"><img alt="Responsive Phone Horizontal Mode" src="//csite.nicepage.com/Images/Site/responsive-phone-horizontal.png"></a>
-        <a class="hidden-xs" href="#" id="previewPhoneBtn" data-preview-size="440px"><img alt="Responsive Phone Mode" src="//csite.nicepage.com/Images/Site/responsive-phone.png"></a>
-        <a class="close" href="/ru/ht/1442806/zakazat-morozhenoe-onlayn-html-shablon"><img alt="Close" src="//csite.nicepage.com/Images/Site/icon-close.png"></a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Магазин</title>
+</head>
+<body>
+<header class="header">
+    <div class="container">
+        <a href="/" class="logo" title="Магаз">
+            <img src="https://sun9-73.userapi.com/impg/LlFhCCrFlSL8QcXqaRntpXbQX62ACsGZs67_xA/f3DVgs-F0FE.jpg?size=219x99&quality=96&sign=daf3d997d0003d7fc156922d9d3f19c1&type=album" alt="Logo">
+        </a>
+        <div class="header-right">
+            <form class="search-form">
+                <label>
+                    <input type="text" name="search" value="" placeholder="Search" class="search-input">
+                </label>
+                <button><i class="fa fa-search search-i"></i></button>
+            </form>
+            <div class="cart-informer">
+                <button class="cart-informer__button">
+                    <span class="cart-informer__count">1</span>
+                    <span class="cart-informer__icon"><i class="fa fa-shopping-cart cart-informer__icon-i"></i></span>
+                    <span class="cart-informer__value">$100.00</span>
+                    <i class="fa fa-chevron-down cart-informer__i"></i>
+                </button>
+            </div>
+        </div>
     </div>
+</header>
 
-<main>{content}</main>
-</div>
-<footer>я футер</footer>
+
+<!-- NEW -->
+{content}
+<!-- END -->
+
+<footer>
+    Проект делает Солбон Гомбоев
+</footer>
+
+</body>
 <style>
-
-    iframe {
-        display: none;
-    }
-
-
-    html,
-    body {
-        height: 100%;
-    }
-
-    .page-preview {
-        border-radius: 0;
-        height: 100%;
-    }
-
-    .page-preview-header {
-        background: #f2f2f2;
-        border: none;
-        height: 70px;
-        position: relative;
+    footer{
         text-align: center;
+        padding: 5px;
+        background-color: #abbaba;
+        color: #004;
+    }
+    /* NEW */
+
+    {
+        box-sizing: border-box;
     }
 
-    .page-preview-header > a {
-        display: inline-block;
-        margin-top: 15px;
-        padding: 4px;
+
+
+    html, body{
+        margin: 0;
+
+
+        /* NEW */
+        font-size: 16px;
+        font-family: Roboto,serif;
+        /* END */
+
+
+
+    }
+    .header{
+        background: #cb2d41;
+        padding: 35px 0;
+    }
+    .container{
+        width: 1140px;
+        display: flex;
+        align-items: center;
+        padding-left: 15px;
+        padding-right: 15px;
+        margin: 0 auto;
+    }
+    .header-right{
+        display: flex;
+        align-items: center;
+        margin-left: auto;
+    }
+    .search-form {
+        display: flex;
+        align-items: center;
+        margin: 0 auto;
+        width: 270px;
+        height: 50px;
+        border: 1px solid rgba(255,255,255,.2);
+        padding-left: 5px;
+        padding-right: 10px;
+    }
+    input {
+        outline: 0;
+        border: none;
+        background: none;
+    }
+    .search-input {
+        color: #fff;
+        width: 90%;
+        height: 100%;
+        font-size: 12px;
+    }
+    ::-webkit-input-placeholder {
+        color: #fff
     }
 
-    .page-preview-header > a:hover {
-        background: #e2f0fc;
+    :-moz-placeholder {
+        color: #fff
+    }
+
+    ::-moz-placeholder {
+        color: #fff
+    }
+
+    :-ms-input-placeholder {
+        color: #fff
+    }
+    button {
+        outline: 0;
+        border: none;
+        background: none;
+        cursor: pointer;
+    }
+    .search-i {
+        color: #fff;
+    }
+    .cart-informer {
+        color: #fff;
+        padding-top: 0;
+        padding-left: 20px;
+    }
+    .cart-informer__button {
+        margin-left: auto;
+        margin-right: auto;
+        display: flex;
+        align-items: center;
+    }
+    .cart-informer__count {
+        color: #111;
+        font-size: 10px;
+        background-color: #fff;
+        width: 23px;
+        height: 23px;
+        margin-right: -4px;
+        margin-left: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .cart-informer__icon {
+        width: 45px;
+        height: 45px;
+        border: 1px solid rgba(255,255,255,.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .cart-informer__icon-i {
+        color: #fff;
+    }
+    .cart-informer__i, .cart-informer__value {
+        color: #fff;
+        font-weight: 700;
+        font-size: 12px;
+        padding-left: 10px;
+    }
+    .cart-informer__i {
+        font-size: 11px;
+        margin-top: -2px;
+    }
+
+
+
+    /* NEW */
+
+    ul {
+        padding: 0;
+        margin: 0;
+    }
+    li {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    p {
+        margin: 0;
+        padding: 0;
+    }
+    img {
+        border-style: none;
+    }
+    a {
+        color: #111;
         text-decoration: none;
     }
-
-    .page-preview-header > a.active {
-        background: #c9e4f9;
+    a:hover {
+        color: #cb2d41;
     }
-
-    .page-preview-header > .close {
-        float: right;
-        margin-right: 10px;
-    }
-
-
-
-    .page-preview-body iframe {
-        border: none;
-        display: inline-block;
-        height: 100%;
-    }
+    /* END */
 </style>
-<script type="text/javascript">
-    var device = 'desktop';
-    function init($) {
-        $('#previewDesktopBtn').click(function (e) {
-            setLivePreviewFrameSize($(this));
-            setActiveResponsiveButton(this);
-            e.preventDefault();
-        });
-
-        $('#previewLaptopBtn').click(function (e) {
-            setLivePreviewFrameSize($(this));
-            setActiveResponsiveButton(this);
-            e.preventDefault();
-        });
-        $('#previewTabletBtn').click(function (e) {
-            setLivePreviewFrameSize($(this));
-            setActiveResponsiveButton(this);
-            e.preventDefault();
-        });
-        $('#previewPhoneHorizontalBtn').click(function (e) {
-            setLivePreviewFrameSize($(this));
-            setActiveResponsiveButton(this);
-            e.preventDefault();
-        });
-        $('#previewPhoneBtn').click(function (e) {
-            setLivePreviewFrameSize($(this));
-            setActiveResponsiveButton(this);
-            e.preventDefault();
-        });
-
-        detectActiveResponsiveButton();
-    }
-
-    if (jQuery.isReady) {
-        init(jQuery);
-    } else {
-        jQuery(function ($) {
-            init($);
-        });
-    }
-
-    function setActiveResponsiveButton(btn) {
-        $(".page-preview-header > a").removeClass("active");
-        $(btn).addClass("active");
-    }
-
-    function detectActiveResponsiveButton() {
-        var d = device;
-        if (!d) {
-            d = 'desktop';
-        }
-        $("#preview" + d.charAt(0).toUpperCase() + d.substr(1) + "Btn").click();
-    }
-
-    function getDataPreviewSizeAttr(el) {
-        return el.closest("[data-preview-size]").attr("data-preview-size");
-    }
-
-    function setLivePreviewFrameSize(srcEl) {
-        var getScrollbarWidth = function () {
-            var s = $('<div style="width:100px;height:100px;overflow:scroll;visibility:hidden;position:absolute;top:-99999px"><div style="height:200px;"></div></div>')
-                .appendTo("body");
-            var res = s.width() - s.find("div").last().width();
-            s.remove();
-            return res;
-        };
-        var attr = getDataPreviewSizeAttr(srcEl);
-        $('#livePreviewFrame').width(attr.indexOf("%") !== -1 ? attr : parseInt(attr, 10) + getScrollbarWidth());
-    }
-
-</script>
+</html>
