@@ -1,8 +1,13 @@
 <?php
 use App\Container;
+use App\Controller\CartController;
+use App\Controller\CategoryController;
 use App\Controller\UserController;
 use App\FileLogger;
 use App\LoggerInterface;
+use App\Repository\CartProductsRepository;
+use App\Repository\CartRepository;
+use App\Repository\CategoryRepository;
 use App\Repository\UserRepository;
 use App\Controller\MainController;
 use App\Repository\ProductRepository;
@@ -31,9 +36,30 @@ return [
         $connection = $container->get('db');
         return new ProductRepository($connection);
     },
+    CategoryRepository::class => function(Container $container){
+        $connection = $container->get('db');
+        return new CategoryRepository($connection);
+    },
     MainController::class => function (Container $container){
         $productRepository = $container->get(ProductRepository::class);
-        return new MainController($productRepository);
+        $categoryRepository = $container->get(CategoryRepository::class);
+        return new MainController($productRepository, $categoryRepository);
+    },
+    CategoryController::class => function (Container $container){
+        $productRepository = $container->get(ProductRepository::class);
+        $categoryRepository = $container->get(CategoryRepository::class);
+        return new CategoryController($productRepository, $categoryRepository);
+    },
+    CartRepository::class => function(Container $container){
+        $connection = $container->get('db');
+        return new CartRepository($connection);
+    },
+    CartController::class => function (Container $container){
+        $cartProductsRepository = $container->get(CartProductsRepository::class);
+        return new CartController($cartProductsRepository);
+    },
+    CartProductsRepository::class => function (Container $container){
+        $connection = $container->get('db');
+        return new CartProductsRepository($connection);
     }
-
 ];

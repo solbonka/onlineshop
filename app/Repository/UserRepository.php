@@ -1,15 +1,14 @@
 <?php
 namespace App\Repository;
-use PDO;
-use App\Entity\User;
-class UserRepository
-{
-    private PDO $connection;
 
-    public function __construct(PDO $connection)
-    {
-        $this->connection = $connection;
-    }
+use App\Entity\User;
+use PDO;
+
+class UserRepository extends Repository
+{
+    protected string $table = 'users';
+    protected string $entityName = User::class;
+
     public function create(User $user): void
     {
         $sth = $this->connection->prepare("

@@ -5,7 +5,7 @@ use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
 
 
-class MainController
+class CategoryController
 {
     private ProductRepository $productRepository;
     private CategoryRepository $categoryRepository;
@@ -14,17 +14,17 @@ class MainController
         $this->productRepository = $productRepository;
         $this->categoryRepository = $categoryRepository;
     }
-    public function main(): array
+    public function category(int $categoryId): array
     {
         session_start();
         if (isset($_SESSION['id'])) {
             $products = $this->productRepository->getAllData();
-            $categories = $this->categoryRepository->getAllData();
+            $category = $this->categoryRepository->getDataById($categoryId);
             return [
-                "../views/main.phtml",
+                "../views/category.phtml",
                 [
                     'products' => $products,
-                    'categories' => $categories
+                    'category' => $category
                 ],
                 true
             ];

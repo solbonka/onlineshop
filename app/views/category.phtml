@@ -1,50 +1,45 @@
-<form action="" method="GET">
 <div class="menu">
     <div class="container menu__container">
         <div class="catalog">
             <div class="catalog__wrapper">
                 <div class="catalog__header"><span>Категории</span><i class="catalog__header-icon"></i></div>
                 <ul class="catalog__list">
-                    <?php /** @var Category[] $categories */
+                    <?php /** @var Category $category */
                     use App\Entity\Category;
                     use App\Entity\Product;
-                    foreach ($categories as $category): ?>
-                    <li class="catalog__item">
-                        <a href="/category/<?= $category->getId(); ?>" class="catalog__link">
-
-                            <img src="<?=$category->getIcon(); ?>" alt="Desktops" class="catalog__link-img">
-
-                            <?=$category->getName(); ?>
-
-                        </a>
-                        <div class="catalog__subCatalog">
-                            <?php
-                            /** @var Product[] $products */
-                            foreach($products as $product):
-                            if($category->getId() === $product->getCategoryId()):?>
-                            <div class="catalog__subCatalog__item">
-                                <div class="product catalog__product">
-                                  <img src="<?=$product->getImage() ?>" alt="" class="product__img">
-                                  <div class="product__content">
-                                    <h3 class="product__title"><?=$product->getName(); ?></h3>
-                                    <p class="product__description"><?=$product->getWeight(); ?> грамм </p>
-                                  </div>
-                                  <footer class="product__footer">
-                                    <div class="product__bottom">
-                                      <div class="product__price">
-                                        <span class="product__price-value"><?=$product->getPrice(); ?></span>
-                                        <span class="product__currency">&#8381;</span>
-                                      </div>
-                                      <button class="btn product__btn" type="button">В корзину</button>
-                                    </div>
-                                  </footer>
-                                </div>
+                    ?>
+                        <li class="catalog__item">
+                            <a href="/category/<?= $category->getId(); ?>" class="catalog__link">
+                                <img src="<?=$category->getIcon(); ?>" alt="Desktops" class="catalog__link-img">
+                                <?=$category->getName(); ?>
+                            </a>
+                            <div class="catalog__subCatalog">
+                                <?php
+                                /** @var Product[] $products */
+                                foreach($products as $product):
+                                    if($category->getId() === $product->getCategoryId()):?>
+                                        <div class="catalog__subCatalog__item">
+                                            <div class="product catalog__product">
+                                                <img src="<?=$product->getImage() ?>" alt="" class="product__img">
+                                                <div class="product__content">
+                                                    <h3 class="product__title"><?=$product->getName(); ?></h3>
+                                                    <p class="product__description"><?=$product->getWeight(); ?> грамм </p>
+                                                </div>
+                                                <footer class="product__footer">
+                                                    <div class="product__bottom">
+                                                        <div class="product__price">
+                                                            <span class="product__price-value"><?=$product->getPrice(); ?></span>
+                                                            <span class="product__currency">&#8381;</span>
+                                                        </div>
+                                                        <button class="btn product__btn" type="button">заказать</button>
+                                                    </div>
+                                                </footer>
+                                            </div>
+                                        </div>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
                             </div>
-                            <?php endif; ?>
-                            <?php endforeach; ?>
-                        </div>
-                    </li>
-                    <?php endforeach; ?>
+                        </li>
                 </ul>
             </div>
         </div>
@@ -78,7 +73,6 @@
     </div>
 
 </div>
-</form>
 <style>
     .menu {
         height: 60px;
@@ -146,7 +140,7 @@
     .catalog__list {
         position: relative;
         z-index: 2;
-        visibility: hidden;
+        visibility: visible;
     }
     .catalog__link {
         height: 60px;
@@ -168,8 +162,8 @@
         flex-wrap: wrap;
         background-color: white;
         position: absolute;
-        opacity: 0;
-        visibility: hidden;
+        opacity: 1;
+        visibility: visible;
         left: 280px;
         top: 0;
         height: 501px;

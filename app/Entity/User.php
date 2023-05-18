@@ -9,6 +9,7 @@ class User
     private string $email;
     private string $phoneNumber;
     private string $password;
+
     public function __construct(
     string $lastname,
     string $firstname,

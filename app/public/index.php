@@ -4,6 +4,8 @@ Autoloader::register(dirname(__DIR__));
 
 use App\App;
 use App\Container;
+use App\Controller\CartController;
+use App\Controller\CategoryController;
 use App\Controller\MainController;
 use App\Controller\UserController;
 
@@ -19,4 +21,6 @@ $app->post('/signup', [UserController::class, 'signUp']);
 $app->get('/signin', [UserController::class, 'signIn']);
 $app->post('/signin', [UserController::class, 'signIn']);
 $app->get('/main', [MainController::class, 'main']);
+$app->get('/category/(?<category_id>[0-9]+)', [CategoryController::class, 'category']);
+$app->get('/cart', [CartController::class, 'cart']);
 $app->run();

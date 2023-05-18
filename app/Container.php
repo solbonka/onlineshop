@@ -22,6 +22,7 @@ class Container
      */
     public function get(string $name): mixed
     {
+
         if (!isset($this->services[$name])){
             if (class_exists($name)){
                 return new $name();
@@ -32,6 +33,7 @@ class Container
             $callback = $this->services[$name];
             return $callback($this);
         }
+
         return $this->services[$name];
     }
 }

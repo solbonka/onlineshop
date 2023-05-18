@@ -1,5 +1,7 @@
 <?php
 namespace App;
+use App\Exception\ContainerException;
+
 class App
 {
     private array $routes = [];
@@ -7,18 +9,27 @@ class App
     public function __construct(private Container $container)
     {
     }
+
+    /**
+     * @throws ContainerException
+     */
     public function run(): void{
         //try{
-            $handler = $this->route();
+            list($handler, $params) = $this->route();
+            if(empty($handler)){
+                require_once '../views/notfound.phtml'; die;
+            }
             if (is_array($handler)){
                 list($obj, $method) = $handler;
                 if(!is_object($obj)){
                         $obj = $this->container->get($obj);
                 }
-                $response = $obj->$method();
+
+                $response = $obj->$method(...$params);
             }
             else{
                 $response = call_user_func($handler);
+
             }
 
             list($view, $params, $isLayout) = $response;
@@ -46,15 +57,27 @@ class App
     {
         $requestUri = $_SERVER['REQUEST_URI'];
         $method = $_SERVER['REQUEST_METHOD'];
-
+        $params = [];
         foreach ($this->routes[$method] as $pattern => $handler)
         {
-            if (preg_match("#^$pattern$#", $requestUri))
+
+            if (preg_match("#^$pattern$#", $requestUri, $params))
             {
-                return $handler;
+                if (empty($params)){
+                    return null;
+                }
+                else {
+                    foreach ($params as $key => $value) {
+                        if($key === 0 || intval($key)){
+                            unset($params[$key]);
+                        }
+                    }
+                }
+                $params = array_values($params);
+                return [$handler, $params];
             }
         }
-        return ['App\Controller\NotFound', 'notFound'];
+        return null;
     }
 
     public function get(string $route, array|callable $handler): void
