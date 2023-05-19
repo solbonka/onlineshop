@@ -44,5 +44,22 @@ class ProductRepository extends Repository
             }
             return $products;
         }
+   public function getProductById(int $id)
+   {
+       $result = $this->connection->prepare("SELECT * FROM products WHERE id = ?");
+       $result->execute([$id]);
+       $productData = $result->fetch(PDO::FETCH_ASSOC);
+       $product = null;
+       if ($productData) {
+           $product = new Product;
+           $product->setId($productData['id']);
+           $product->setName($productData['name']);
+           $product->setPrice($productData['price']);
+           $product->setWeight($productData['weight']);
+           $product->setImage($productData['image']);
+           $product->setCategoryId($productData['category_id']);
+       }
+       return $product;
+    }
 
 }

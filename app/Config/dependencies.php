@@ -5,7 +5,7 @@ use App\Controller\CategoryController;
 use App\Controller\UserController;
 use App\FileLogger;
 use App\LoggerInterface;
-use App\Repository\CartProductsRepository;
+use App\Repository\CartProductRepository;
 use App\Repository\CartRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\UserRepository;
@@ -55,11 +55,14 @@ return [
         return new CartRepository($connection);
     },
     CartController::class => function (Container $container){
-        $cartProductsRepository = $container->get(CartProductsRepository::class);
-        return new CartController($cartProductsRepository);
-    },
-    CartProductsRepository::class => function (Container $container){
+        $cartProductsRepository = $container->get(CartProductRepository::class);
+        $cartRepository = $container->get(CartRepository::class);
+        $productRepository = $container->get(ProductRepository::class);
         $connection = $container->get('db');
-        return new CartProductsRepository($connection);
+        return new CartController($cartProductsRepository, $cartRepository, $productRepository, $connection);
+    },
+    CartProductRepository::class => function (Container $container){
+        $connection = $container->get('db');
+        return new CartProductRepository($connection);
     }
 ];

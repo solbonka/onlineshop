@@ -7,7 +7,10 @@ class Cart
     private int $id;
     private int $userId;
 
-
+    public function __construct(int $userId)
+    {
+        $this->userId = $userId;
+    }
 
     public function getId(): int
     {

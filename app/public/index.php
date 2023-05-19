@@ -23,4 +23,5 @@ $app->post('/signin', [UserController::class, 'signIn']);
 $app->get('/main', [MainController::class, 'main']);
 $app->get('/category/(?<category_id>[0-9]+)', [CategoryController::class, 'category']);
 $app->get('/cart', [CartController::class, 'cart']);
+$app->post('/main', [CartController::class, 'add']);
 $app->run();

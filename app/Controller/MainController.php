@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controller;
+
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
 
@@ -32,4 +33,6 @@ class MainController
         header('Location: /signin');
         return [];
     }
+
+
 }

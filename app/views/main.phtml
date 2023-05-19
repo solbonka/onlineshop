@@ -1,4 +1,4 @@
-<form action="" method="GET">
+
 <div class="menu">
     <div class="container menu__container">
         <div class="catalog">
@@ -10,12 +10,10 @@
                     use App\Entity\Product;
                     foreach ($categories as $category): ?>
                     <li class="catalog__item">
+
                         <a href="/category/<?= $category->getId(); ?>" class="catalog__link">
-
                             <img src="<?=$category->getIcon(); ?>" alt="Desktops" class="catalog__link-img">
-
                             <?=$category->getName(); ?>
-
                         </a>
                         <div class="catalog__subCatalog">
                             <?php
@@ -30,19 +28,23 @@
                                     <p class="product__description"><?=$product->getWeight(); ?> грамм </p>
                                   </div>
                                   <footer class="product__footer">
-                                    <div class="product__bottom">
-                                      <div class="product__price">
-                                        <span class="product__price-value"><?=$product->getPrice(); ?></span>
-                                        <span class="product__currency">&#8381;</span>
-                                      </div>
-                                      <button class="btn product__btn" type="button">В корзину</button>
-                                    </div>
+                                      <form action="/main" method="POST">
+                                          <div class="product__bottom">
+                                             <div class="product__price">
+                                                <span class="product__price-value"><?=$product->getPrice(); ?></span>
+                                                <span class="product__currency">&#8381;</span>
+                                             </div>
+                                                <input type="hidden" name="productId" value=<?= $product->getId(); ?>>
+                                                <button class="btn product__btn" type="submit">В корзину</button>
+                                          </div>
+                                      </form>
                                   </footer>
                                 </div>
                             </div>
                             <?php endif; ?>
                             <?php endforeach; ?>
                         </div>
+
                     </li>
                     <?php endforeach; ?>
                 </ul>
@@ -57,6 +59,7 @@
     </div>
 
 </div>
+
 <div class="slider">
 
     <div class="container">
@@ -78,7 +81,6 @@
     </div>
 
 </div>
-</form>
 <style>
     .menu {
         height: 60px;
