@@ -31,16 +31,16 @@ class App
                 $response = call_user_func($handler);
 
             }
-
             list($view, $params, $isLayout) = $response;
             extract($params);
+
 
             ob_start();
             include $view;
             if ($isLayout) {
                 $content = ob_get_clean();
-                $layout = file_get_contents('../views/layout.html');
-                $result = str_replace('{content}', $content, $layout);
+                $layout = file_get_contents('../views/layout.phtml');
+                $result = str_replace(['{quantityInCart}','{content}'], [ $params['quantityInCart'],$content], $layout);
                 echo $result;
             }
        //} catch (\Throwable $exception) {

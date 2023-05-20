@@ -30,10 +30,13 @@ class CartController
         session_start();
         if (isset($_SESSION['id'])) {
             $cartProducts = $this->cartProductRepository->getCartProducts($_SESSION['id']);
+            $cart = $this->cartRepository->getCartByUserId($_SESSION['id']);
+            $quantityInCart = $this->cartProductRepository->getQuantityInCart($cart);
             return [
                 "../views/cart.phtml",
                 [
-                    'cartProducts' => $cartProducts
+                    'cartProducts' => $cartProducts,
+                    'quantityInCart' => $quantityInCart
                 ],
                 true
             ];

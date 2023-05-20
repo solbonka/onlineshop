@@ -65,14 +65,22 @@ class CartProductRepository extends Repository
         }
         return $cartProduct;
     }
-    public function updateQuantity(CartProduct $cartProduct):void
+    public function getQuantityInCart(Cart $cart):?int
     {
         $sth = $this->connection->prepare("
-             UPDATE cartproduct 
-             SET quantity = ?
-             WHERE product_id = ?
+             select quantity 
+             from cartproduct 
+             where cart_id = ?
              ");
-        $sth->execute([$cartProduct->getQuantity()+1, $cartProduct->getProduct()->getId()]);
+        $sth->execute([$cart->getId()]);
+        $quantityData = $sth->fetchAll(\PDO::FETCH_ASSOC);
+        $quantityArr = [];
+        foreach ($quantityData as $arr){
+            foreach ($arr as $value){
+                $quantityArr[] = $value;
+            }
+        }
+        return array_sum($quantityArr);
     }
 
 }

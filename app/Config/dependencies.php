@@ -43,12 +43,16 @@ return [
     MainController::class => function (Container $container){
         $productRepository = $container->get(ProductRepository::class);
         $categoryRepository = $container->get(CategoryRepository::class);
-        return new MainController($productRepository, $categoryRepository);
+        $cartProductRepository = $container->get(CartProductRepository::class);
+        $cartRepository = $container->get(CartRepository::class);
+        return new MainController($productRepository, $categoryRepository, $cartProductRepository, $cartRepository);
     },
     CategoryController::class => function (Container $container){
         $productRepository = $container->get(ProductRepository::class);
         $categoryRepository = $container->get(CategoryRepository::class);
-        return new CategoryController($productRepository, $categoryRepository);
+        $cartProductRepository = $container->get(CartProductRepository::class);
+        $cartRepository = $container->get(CartRepository::class);
+        return new CategoryController($productRepository, $categoryRepository, $cartProductRepository, $cartRepository);
     },
     CartRepository::class => function(Container $container){
         $connection = $container->get('db');
