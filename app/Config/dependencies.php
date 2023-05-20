@@ -11,6 +11,8 @@ use App\Repository\CategoryRepository;
 use App\Repository\UserRepository;
 use App\Controller\MainController;
 use App\Repository\ProductRepository;
+use App\Service\CartService;
+use App\ViewRenderer;
 
 return [
     UserRepository::class => function (Container $container){
@@ -19,7 +21,8 @@ return [
     },
     UserController::class => function (Container $container){
         $userRepository = $container->get(UserRepository::class);
-        return new UserController($userRepository);
+        $viewRenderer = $container->get(ViewRenderer::class);
+        return new UserController($userRepository, $viewRenderer);
     },
     LoggerInterface::class => function(){
         return new FileLogger();
@@ -45,28 +48,38 @@ return [
         $categoryRepository = $container->get(CategoryRepository::class);
         $cartProductRepository = $container->get(CartProductRepository::class);
         $cartRepository = $container->get(CartRepository::class);
-        return new MainController($productRepository, $categoryRepository, $cartProductRepository, $cartRepository);
+        $viewRenderer = $container->get(ViewRenderer::class);
+        return new MainController($productRepository, $categoryRepository, $cartProductRepository, $cartRepository, $viewRenderer);
     },
     CategoryController::class => function (Container $container){
         $productRepository = $container->get(ProductRepository::class);
         $categoryRepository = $container->get(CategoryRepository::class);
         $cartProductRepository = $container->get(CartProductRepository::class);
         $cartRepository = $container->get(CartRepository::class);
-        return new CategoryController($productRepository, $categoryRepository, $cartProductRepository, $cartRepository);
+        $viewRenderer = $container->get(ViewRenderer::class);
+        return new CategoryController($productRepository, $categoryRepository, $cartProductRepository, $cartRepository, $viewRenderer);
     },
     CartRepository::class => function(Container $container){
         $connection = $container->get('db');
-        return new CartRepository($connection);
+        $cartService = $container->get(CartService::class);
+        return new CartRepository($connection, $cartService);
     },
     CartController::class => function (Container $container){
         $cartProductsRepository = $container->get(CartProductRepository::class);
         $cartRepository = $container->get(CartRepository::class);
         $productRepository = $container->get(ProductRepository::class);
         $connection = $container->get('db');
-        return new CartController($cartProductsRepository, $cartRepository, $productRepository, $connection);
+        $viewRenderer = $container->get(ViewRenderer::class);
+        return new CartController($cartProductsRepository, $cartRepository, $productRepository, $connection, $viewRenderer);
     },
     CartProductRepository::class => function (Container $container){
         $connection = $container->get('db');
         return new CartProductRepository($connection);
+    },
+    CartService::class => function (Container $container){
+        return new CartService();
+    },
+    ViewRenderer::class => function (Container $container){
+        return new ViewRenderer();
     }
 ];

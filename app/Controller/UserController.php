@@ -3,16 +3,20 @@
 namespace App\Controller;
 use App\Repository\UserRepository;
 use App\Entity\User;
+use App\ViewRenderer;
 
 
 class UserController
 {
     private UserRepository $userRepository;
-    public function __construct(UserRepository $userRepository)
+    private ViewRenderer $renderer;
+    public function __construct(UserRepository $userRepository,
+                                ViewRenderer $renderer)
     {
         $this->userRepository = $userRepository;
+        $this->renderer = $renderer;
     }
-    public function signUp(): array
+    public function signUp(): string
     {
         $errorInputs = [];
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -31,13 +35,13 @@ class UserController
                 $this->userRepository->create($user);
             }
         }
-        return [
+        return $this->renderer->render(
             "../views/signup.phtml",
             [
                 'errorInputs' => $errorInputs
             ],
             false
-        ];
+        );
 
     }
 
@@ -153,7 +157,7 @@ class UserController
 
         return $err;
     }
-    public function signIn(): array
+    public function signIn(): string
     {
         session_start();
 
@@ -176,13 +180,13 @@ class UserController
         }
 
 
-        return [
+        return $this->renderer->render(
             "../views/signin.phtml",
             [
                 'errorInputs' => $errorInputs
             ],
             false
-        ];
+        );
     }
     public function validateInputsSignIn(array $data):array
     {

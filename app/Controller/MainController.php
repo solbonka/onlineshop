@@ -7,6 +7,7 @@ use App\Repository\CartProductRepository;
 use App\Repository\CartRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
+use App\ViewRenderer;
 
 
 class MainController
@@ -15,18 +16,21 @@ class MainController
     private CategoryRepository $categoryRepository;
     private CartProductRepository $cartProductRepository;
     private CartRepository $cartRepository;
+    private ViewRenderer $renderer;
 
     public function __construct(ProductRepository $productRepository,
                                 CategoryRepository $categoryRepository,
                                 CartProductRepository $cartProductRepository,
-                                CartRepository $cartRepository)
+                                CartRepository $cartRepository,
+                                ViewRenderer $renderer)
     {
         $this->productRepository = $productRepository;
         $this->categoryRepository = $categoryRepository;
         $this->cartProductRepository = $cartProductRepository;
         $this->cartRepository = $cartRepository;
+        $this->renderer = $renderer;
     }
-    public function main(): array
+    public function main(): string
     {
         session_start();
         if (isset($_SESSION['id'])) {
@@ -34,19 +38,14 @@ class MainController
             $categories = $this->categoryRepository->getAllData();
             $cart = $this->cartRepository->getCartByUserId($_SESSION['id']);
             $quantityInCart = $this->cartProductRepository->getQuantityInCart($cart);
-            return [
-                "../views/main.phtml",
+            return $this->renderer->render("../views/main.phtml",
                 [
-                    'products' => $products,
-                    'categories' => $categories,
-                    'quantityInCart' => $quantityInCart
-                ],
-                true
-            ];
+                'products' => $products,
+                'categories' => $categories,
+                'quantityInCart' => $quantityInCart
+            ], true);
+
         }
-        header('Location: /signin');
-        return [];
+        header('Location: /signin'); die;
     }
-
-
 }

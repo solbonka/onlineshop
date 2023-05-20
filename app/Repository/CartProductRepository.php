@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Cart;
 use App\Entity\CartProduct;
 use App\Entity\Product;
+use PDO;
 
 class CartProductRepository extends Repository
 {
@@ -55,7 +56,7 @@ class CartProductRepository extends Repository
     {
         $result = $this->connection->prepare("SELECT * FROM cartproduct WHERE product_id = ? and cart_id = ?");
         $result->execute([$product->getId(), $cart->getId()]);
-        $cartProductData = $result->fetch(\PDO::FETCH_ASSOC);
+        $cartProductData = $result->fetch(PDO::FETCH_ASSOC);
         $cartProduct = null;
         if ($cartProductData){
             $cartProduct = new CartProduct;
@@ -68,19 +69,16 @@ class CartProductRepository extends Repository
     public function getQuantityInCart(Cart $cart):?int
     {
         $sth = $this->connection->prepare("
-             select quantity 
-             from cartproduct 
-             where cart_id = ?
+            select sum(quantity)
+            from cartproduct
+            where cart_id = ?
+            group by cart_id
              ");
         $sth->execute([$cart->getId()]);
-        $quantityData = $sth->fetchAll(\PDO::FETCH_ASSOC);
-        $quantityArr = [];
-        foreach ($quantityData as $arr){
-            foreach ($arr as $value){
-                $quantityArr[] = $value;
-            }
+        $quantitySum = $sth->fetch(PDO::FETCH_ASSOC);
+        if ($quantitySum) {
+            return $quantitySum['sum'];
         }
-        return array_sum($quantityArr);
+        return null;
     }
-
 }

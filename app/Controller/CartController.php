@@ -6,6 +6,7 @@ use App\Entity\Cart;
 use App\Repository\CartProductRepository;
 use App\Repository\CartRepository;
 use App\Repository\ProductRepository;
+use App\ViewRenderer;
 use PDO;
 
 class CartController
@@ -14,35 +15,37 @@ class CartController
     private CartRepository $cartRepository;
     private ProductRepository $productRepository;
     private PDO $connection;
+    private ViewRenderer $renderer;
 
     public function __construct(CartProductRepository $cartProductRepository,
                                 CartRepository $cartRepository,
                                 ProductRepository $productRepository,
-                                PDO $connection)
+                                PDO $connection,
+                                ViewRenderer $renderer)
     {
         $this->cartProductRepository = $cartProductRepository;
         $this->cartRepository = $cartRepository;
         $this->productRepository = $productRepository;
         $this->connection = $connection;
+        $this->renderer = $renderer;
     }
-    public function cart(): array
+    public function cart(): string
     {
         session_start();
         if (isset($_SESSION['id'])) {
             $cartProducts = $this->cartProductRepository->getCartProducts($_SESSION['id']);
             $cart = $this->cartRepository->getCartByUserId($_SESSION['id']);
             $quantityInCart = $this->cartProductRepository->getQuantityInCart($cart);
-            return [
+            return $this->renderer->render(
                 "../views/cart.phtml",
                 [
                     'cartProducts' => $cartProducts,
                     'quantityInCart' => $quantityInCart
                 ],
                 true
-            ];
+            );
         }
-        header('Location: /signin');
-        return [];
+        header('Location: /signin');die;
     }
     public function add(): void
     {
