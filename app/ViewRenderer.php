@@ -8,10 +8,12 @@ class ViewRenderer
         ob_start();
         include $view;
         $start = ob_get_clean();
-        $content = file_get_contents('../views/layout.phtml');
         if ($isLayout) {
+
+            $content = file_get_contents('../views/layout.phtml');
             $content = str_replace('{content}',$start, $content);
+            return $content;
         }
-        return $content;
+        return $start;
     }
 }

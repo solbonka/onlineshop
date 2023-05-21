@@ -2,32 +2,31 @@
 
 namespace App\Controller;
 
-use App\Entity\Cart;
 use App\Repository\CartProductRepository;
 use App\Repository\CartRepository;
 use App\Repository\ProductRepository;
+use App\Service\CartService;
 use App\ViewRenderer;
-use PDO;
 
 class CartController
 {
     private CartProductRepository $cartProductRepository;
     private CartRepository $cartRepository;
     private ProductRepository $productRepository;
-    private PDO $connection;
     private ViewRenderer $renderer;
+    private CartService $cartService;
 
     public function __construct(CartProductRepository $cartProductRepository,
                                 CartRepository $cartRepository,
                                 ProductRepository $productRepository,
-                                PDO $connection,
-                                ViewRenderer $renderer)
+                                ViewRenderer $renderer,
+                                CartService $cartService)
     {
         $this->cartProductRepository = $cartProductRepository;
         $this->cartRepository = $cartRepository;
         $this->productRepository = $productRepository;
-        $this->connection = $connection;
         $this->renderer = $renderer;
+        $this->cartService = $cartService;
     }
     public function cart(): string
     {
@@ -47,31 +46,22 @@ class CartController
         }
         header('Location: /signin');die;
     }
+
+    /**
+     * @throws \Throwable
+     */
     public function add(): void
     {
         session_start();
         if (isset($_SESSION['id'])) {
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $productId = $_POST['productId'];
                 $errorMessage = $this->validate($productId);
                 if (empty($errorMessage)) {
                     $product = $this->productRepository->getProductById($_POST['productId']);
-                    $cart = $this->cartRepository->getCartByUserId($_SESSION['id']);
-                    $this->connection->beginTransaction();
-                    try{
-                        if (empty ($cart)) {
-                            $cart = new Cart($_SESSION['id']);
-                            $this->cartRepository->create($cart);
-                        }
-                        $this->cartProductRepository->createCartProduct($cart, $product);
-                    }
-                    catch (\Throwable $exception){
-                        $this->connection->rollBack();
-                    }
-                    $this->connection->commit();
+                    $cart = $this->cartService->getCart($_SESSION['id']);
+                    $this->cartService->addProduct($cart, $product);
                     header('Location: /main'); die;
                 }
-            }
         }
     }
     private function validate(int $productId): array

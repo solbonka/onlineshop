@@ -61,23 +61,26 @@ return [
     },
     CartRepository::class => function(Container $container){
         $connection = $container->get('db');
-        $cartService = $container->get(CartService::class);
-        return new CartRepository($connection, $cartService);
+        return new CartRepository($connection);
     },
     CartController::class => function (Container $container){
         $cartProductsRepository = $container->get(CartProductRepository::class);
         $cartRepository = $container->get(CartRepository::class);
         $productRepository = $container->get(ProductRepository::class);
-        $connection = $container->get('db');
         $viewRenderer = $container->get(ViewRenderer::class);
-        return new CartController($cartProductsRepository, $cartRepository, $productRepository, $connection, $viewRenderer);
+        $cartService = $container->get(CartService::class);
+        return new CartController($cartProductsRepository, $cartRepository,
+            $productRepository, $viewRenderer, $cartService);
     },
     CartProductRepository::class => function (Container $container){
         $connection = $container->get('db');
         return new CartProductRepository($connection);
     },
     CartService::class => function (Container $container){
-        return new CartService();
+        $cartRepository = $container->get(CartRepository::class);
+        $connection = $container->get('db');
+        $cartProductsRepository = $container->get(CartProductRepository::class);
+        return new CartService($cartRepository, $connection, $cartProductsRepository);
     },
     ViewRenderer::class => function (Container $container){
         return new ViewRenderer();
