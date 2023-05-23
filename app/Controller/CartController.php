@@ -7,6 +7,7 @@ use App\Repository\CartRepository;
 use App\Repository\ProductRepository;
 use App\Service\CartService;
 use App\ViewRenderer;
+use Throwable;
 
 class CartController
 {
@@ -47,22 +48,25 @@ class CartController
         header('Location: /signin');die;
     }
 
+
     /**
-     * @throws \Throwable
+     * @throws Throwable
      */
-    public function add(): void
+    public function add(): string
     {
         session_start();
         if (isset($_SESSION['id'])) {
+          //  json_decode();
                 $productId = $_POST['productId'];
                 $errorMessage = $this->validate($productId);
                 if (empty($errorMessage)) {
                     $product = $this->productRepository->getProductById($_POST['productId']);
-                    $cart = $this->cartService->getCart($_SESSION['id']);
-                    $this->cartService->addProduct($cart, $product);
-                    header('Location: /main'); die;
+                    $this->cartService->addProduct($_SESSION['id'], $product);
+                    $quantityInCart = $this->cartProductRepository->getQuantityInCart($this->cartService->getCart($_SESSION['id']));
+                    //header('Location: /main'); die;
                 }
         }
+        return $quantityInCart ?? '';
     }
     private function validate(int $productId): array
     {

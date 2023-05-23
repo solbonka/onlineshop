@@ -9,7 +9,6 @@ class ViewRenderer
         include $view;
         $start = ob_get_clean();
         if ($isLayout) {
-
             $content = file_get_contents('../views/layout.phtml');
             $content = str_replace('{content}',$start, $content);
             return $content;

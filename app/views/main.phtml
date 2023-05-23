@@ -1,4 +1,7 @@
-
+<script
+        src="https://code.jquery.com/jquery-3.7.0.min.js"
+        integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
+        crossorigin="anonymous"></script>
 <div class="menu">
     <div class="container menu__container">
         <div class="catalog">
@@ -28,16 +31,16 @@
                                     <p class="product__description"><?=$product->getWeight(); ?> грамм </p>
                                   </div>
                                   <footer class="product__footer">
-                                      <form action="/main" method="POST">
                                           <div class="product__bottom">
                                              <div class="product__price">
                                                 <span class="product__price-value"><?=$product->getPrice(); ?></span>
                                                 <span class="product__currency">&#8381;</span>
                                              </div>
+                                              <form class="my-form" action="/main" method="POST">
                                                 <input type="hidden" name="productId" value=<?= $product->getId(); ?>>
-                                                <button class="btn product__btn" type="submit">В корзину</button>
+                                                <button onclick="out()" class="btn product__btn" type="submit" value=<?= $product->getId(); ?>>В корзину</button>
+                                              </form>
                                           </div>
-                                      </form>
                                   </footer>
                                 </div>
                             </div>
@@ -48,8 +51,7 @@
                     </li>
                     <?php endforeach; ?>
                     <li class="catalog__item">
-                        В корзине <?php /** @var int $quantityInCart */
-                        echo $quantityInCart; ?> продуктов
+                        <h4>Продуктов в корзине <?= $quantityInCart; ?> </h4>
                     </li>
                 </ul>
             </div>
@@ -85,6 +87,20 @@
     </div>
 
 </div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.my-form button').click(function (){
+            var parent = $(this).parent();
+            var productId = parent.find("[name='productId']").attr('value');
+            $.post( "/main", {productId: productId}, function( data ) {
+                var h4 = document.getElementsByTagName('h4')[0];
+                h4.innerHTML = 'Продуктов в корзине ' + data;
+            });
+            return false;
+        });
+    });
+</script>
+
 <style>
     .menu {
         height: 60px;

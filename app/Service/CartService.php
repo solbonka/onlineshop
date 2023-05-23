@@ -5,6 +5,7 @@ use App\Entity\Product;
 use App\Repository\CartProductRepository;
 use App\Repository\CartRepository;
 use PDO;
+use Throwable;
 
 class CartService
 {
@@ -32,16 +33,16 @@ class CartService
     }
 
     /**
-     * @throws \Throwable
+     * @throws Throwable
      */
-    public function addProduct(Cart $cart, Product $product):void
+    public function addProduct(int $userId, Product $product):void
     {
         $this->connection->beginTransaction();
         try{
-            $this->cartRepository->create($cart);
+            $cart = $this->getCart($userId);
             $this->cartProductRepository->createCartProduct($cart, $product);
         }
-        catch (\Throwable $exception){
+        catch (Throwable $exception){
             $this->connection->rollBack();
             throw $exception;
         }
