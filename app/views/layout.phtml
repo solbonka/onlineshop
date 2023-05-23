@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>Магазин</title>
 </head>
+
 <body>
 <header class="header">
     <div class="container">
@@ -19,7 +20,8 @@
             </form>
             <div class="cart-informer">
                 <button onclick="document.location='/cart'" class="cart-informer__button">
-                    <span class="cart-informer__count"></span>
+                    <span class="cart-informer__count" id="smallQty"><?php /** @var int $quantityInCart */
+                        echo $quantityInCart; ?></span>
                     <span class="cart-informer__icon"></span>
                     <span class="cart-informer__value">Сумма</span>
                     <i class="fa fa-chevron-down cart-informer__i"></i>
@@ -39,6 +41,7 @@
 </footer>
 
 </body>
+
 <style>
     footer{
         text-align: center;

@@ -1,7 +1,8 @@
 <script
         src="https://code.jquery.com/jquery-3.7.0.min.js"
         integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
-        crossorigin="anonymous"></script>
+        crossorigin="anonymous">
+</script>
 <div class="menu">
     <div class="container menu__container">
         <div class="catalog">
@@ -36,9 +37,9 @@
                                                 <span class="product__price-value"><?=$product->getPrice(); ?></span>
                                                 <span class="product__currency">&#8381;</span>
                                              </div>
-                                              <form class="my-form" action="/main" method="POST">
+                                              <form class="my-form" action="/addToCart" method="POST" id="quantity">
                                                 <input type="hidden" name="productId" value=<?= $product->getId(); ?>>
-                                                <button onclick="out()" class="btn product__btn" type="submit" value=<?= $product->getId(); ?>>В корзину</button>
+                                                <button class="btn product__btn" type="submit" form="quantity" value=<?= $product->getId(); ?>>В корзину</button>
                                               </form>
                                           </div>
                                   </footer>
@@ -51,7 +52,7 @@
                     </li>
                     <?php endforeach; ?>
                     <li class="catalog__item">
-                        <h4>Продуктов в корзине <?= $quantityInCart; ?> </h4>
+                        <span id="qty">Продуктов в корзине <?= /** @var int $quantityInCart */$quantityInCart; ?> </span>
                     </li>
                 </ul>
             </div>
@@ -90,16 +91,17 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $('.my-form button').click(function (){
-            var parent = $(this).parent();
-            var productId = parent.find("[name='productId']").attr('value');
-            $.post( "/main", {productId: productId}, function( data ) {
-                var h4 = document.getElementsByTagName('h4')[0];
-                h4.innerHTML = 'Продуктов в корзине ' + data;
+            var productId = $(this).parent().find("[name='productId']").attr('value');
+            $.post( "/addToCart", {productId: productId}, function( data ) {
+                document.getElementById("qty").innerHTML = 'Продуктов в корзине ' + data;
             });
             return false;
         });
     });
 </script>
+
+
+
 
 <style>
     .menu {
